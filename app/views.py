@@ -14,9 +14,9 @@ client = MongoClient(link)
 db = client.discord_data
 posts = db.messages
 
-@app.route('/')
+#@app.route('/')
 @app.route('/index')
-def index():
+def graphs():
 
     time = detail_day()
     line_chart = pygal.Bar()
@@ -47,6 +47,42 @@ def index():
     graph_data4 = pie_chart2.render_data_uri()
 
     return render_template("graph.html", graph_data=graph_data,
+                           graph_data2=graph_data2,
+                           graph_data3=graph_data3,
+                           graph_data4=graph_data4)
+
+@app.route('/')
+@app.route('/test')
+def test():
+    time = detail_day()
+    line_chart = pygal.Bar()
+    line_chart.title = 'Discord Details'
+    line_chart.x_labels = map(str, range(0, 24))
+    line_chart.add('Everyone', time)
+    graph_data = line_chart.render_data_uri()
+
+    activities = activity_day()
+    pie_chart = pygal.Pie()
+    pie_chart.title = 'Percentages of User Daily Activity'
+    for name, percentage in activities:
+        pie_chart.add(name, round(percentage, 2))
+    graph_data2 = pie_chart.render_data_uri()
+
+    counts, days = detail_week()
+    line_chart = pygal.Line()
+    line_chart.title = 'Discord Weekly activity'
+    line_chart.x_labels = map(str, days)
+    line_chart.add('Everyone', counts)
+    graph_data3 = line_chart.render_data_uri()
+
+    activities2 = activity_week()
+    pie_chart2 = pygal.Pie()
+    pie_chart2.title = 'Percentages of User Weekly Activity'
+    for name, percentage in activities2:
+        pie_chart2.add(name, round(percentage, 2))
+    graph_data4 = pie_chart2.render_data_uri()
+
+    return render_template("index.html", graph_data=graph_data,
                            graph_data2=graph_data2,
                            graph_data3=graph_data3,
                            graph_data4=graph_data4)

@@ -1,243 +1,207 @@
-from flask import render_template
-from app import app
-from pymongo import MongoClient
 import datetime
+
 import pygal
-from collections import OrderedDict
+from flask import render_template
+from pymongo import MongoClient
+
+from app import app
+from app.scripts import Util
 
 # Getting credentials
 f = open('Stuff.txt', 'r')
 link = f.readline()
 f.close()
 
-client = MongoClient(link)
-db = client.discord_data
+mongo_client = MongoClient(link)
+db = mongo_client.discord_data
 posts = db.messages
 
-#@app.route('/')
-@app.route('/index')
-def graphs():
-
-    time = detail_day()
-    line_chart = pygal.Bar()
-    line_chart.title = 'Discord Details'
-    line_chart.x_labels = map(str, range(0, 24))
-    line_chart.add('Everyone', time)
-    graph_data = line_chart.render_data_uri()
-
-    counts, days = detail_week()
-    line_chart = pygal.Line()
-    line_chart.title = 'Discord Weekly activity'
-    line_chart.x_labels = map(str, days)
-    line_chart.add('Everyone', counts)
-    graph_data2 = line_chart.render_data_uri()
-
-    activities = activity_day()
-    pie_chart = pygal.Pie()
-    pie_chart.title = 'Percentages of User Daily Activity'
-    for name, percentage in activities:
-        pie_chart.add(name, round(percentage, 2))
-    graph_data3 = pie_chart.render_data_uri()
-
-    activities2 = activity_week()
-    pie_chart2 = pygal.Pie()
-    pie_chart2.title = 'Percentages of User Weekly Activity'
-    for name, percentage in activities2:
-        pie_chart2.add(name, round(percentage, 2))
-    graph_data4 = pie_chart2.render_data_uri()
-
-    return render_template("graph.html", graph_data=graph_data,
-                           graph_data2=graph_data2,
-                           graph_data3=graph_data3,
-                           graph_data4=graph_data4)
 
 @app.route('/')
-@app.route('/test')
+@app.route('/days')
 def test():
-    time = detail_day()
-    line_chart = pygal.Bar()
-    line_chart.title = 'Discord Details'
+
+    # Current day activities
+    timedelta = 0
+    interval = 'day'
+    _, _, real_start, _ = Util.get_times(interval, timedelta)
+    date = '{} . {} . {}'.format(real_start.month, real_start.day, real_start.year)
+    string_day = datetime.datetime.strptime(date, '%m . %d . %Y').strftime('%A')
+    date_timedelta_0 = '{} {}'.format(string_day, date)
+    activity_graph_0 = generate_daily_activity_graph(timedelta)
+
+    # Current day activities percentage
+    activity_graph_percentage_0 = generate_daily_activity_percentage_graph(timedelta)
+
+    # Current day activities. Timedelta 1
+    timedelta = 1
+    _, _, real_start, _ = Util.get_times(interval, timedelta)
+    date = '{} . {} . {}'.format(real_start.month, real_start.day, real_start.year)
+    string_day = datetime.datetime.strptime(date, '%m . %d . %Y').strftime('%A')
+    date_timedelta_1 = '{} {}'.format(string_day, date)
+    activity_graph_1 = generate_daily_activity_graph(timedelta)
+
+    # Current day activities percentage. Timedelta 1
+    activity_graph_percentage_1 = generate_daily_activity_percentage_graph(timedelta)
+
+    # Current day activities. Timedelta 2
+    timedelta = 2
+    _, _, real_start, _ = Util.get_times(interval, timedelta)
+    date = '{} . {} . {}'.format(real_start.month, real_start.day, real_start.year)
+    string_day = datetime.datetime.strptime(date, '%m . %d . %Y').strftime('%A')
+    date_timedelta_2 = '{} {}'.format(string_day, date)
+    activity_graph_2 = generate_daily_activity_graph(timedelta)
+
+    # Current day activities percentage. Timedelta 2
+    activity_graph_percentage_2 = generate_daily_activity_percentage_graph(timedelta)
+
+    # Current day activities. Timedelta 3
+    timedelta = 3
+    _, _, real_start, _ = Util.get_times(interval, timedelta)
+    date = '{} . {} . {}'.format(real_start.month, real_start.day, real_start.year)
+    string_day = datetime.datetime.strptime(date, '%m . %d . %Y').strftime('%A')
+    date_timedelta_3 = '{} {}'.format(string_day, date)
+    activity_graph_3 = generate_daily_activity_graph(timedelta)
+
+    # Current day activities percentage. Timedelta 3
+    activity_graph_percentage_3 = generate_daily_activity_percentage_graph(timedelta)
+
+    # Current day activities. Timedelta 4
+    timedelta = 4
+    _, _, real_start, _ = Util.get_times(interval, timedelta)
+    date = '{} . {} . {}'.format(real_start.month, real_start.day, real_start.year)
+    string_day = datetime.datetime.strptime(date, '%m . %d . %Y').strftime('%A')
+    date_timedelta_4 = '{} {}'.format(string_day, date)
+    activity_graph_4 = generate_daily_activity_graph(timedelta)
+
+    # Current day activities percentage. Timedelta 4
+    activity_graph_percentage_4 = generate_daily_activity_percentage_graph(timedelta)
+
+    # Current day activities. Timedelta 5
+    timedelta = 5
+    _, _, real_start, _ = Util.get_times(interval, timedelta)
+    date = '{} . {} . {}'.format(real_start.month, real_start.day, real_start.year)
+    string_day = datetime.datetime.strptime(date, '%m . %d . %Y').strftime('%A')
+    date_timedelta_5 = '{} {}'.format(string_day, date)
+    activity_graph_5 = generate_daily_activity_graph(timedelta)
+
+    # Current day activities percentage. Timedelta 5
+    activity_graph_percentage_5 = generate_daily_activity_percentage_graph(timedelta)
+
+    # Current day activities. Timedelta 6
+    timedelta = 6
+    _, _, real_start, _ = Util.get_times(interval, timedelta)
+    date = '{} . {} . {}'.format(real_start.month, real_start.day, real_start.year)
+    string_day = datetime.datetime.strptime(date, '%m . %d . %Y').strftime('%A')
+    date_timedelta_6 = '{} {}'.format(string_day, date)
+    activity_graph_6 = generate_daily_activity_graph(timedelta)
+
+    # Current day activities percentage. Timedelta 6
+    activity_graph_percentage_6 = generate_daily_activity_percentage_graph(timedelta)
+
+    return render_template("index.html",
+                           date_timedelta_0=date_timedelta_0,
+                           activity_graph_0=activity_graph_0,
+                           activity_graph_percentage_0=activity_graph_percentage_0,
+                           date_timedelta_1=date_timedelta_1,
+                           activity_graph_1=activity_graph_1,
+                           activity_graph_percentage_1=activity_graph_percentage_1,
+                           date_timedelta_2=date_timedelta_2,
+                           activity_graph_2=activity_graph_2,
+                           activity_graph_percentage_2=activity_graph_percentage_2,
+                           date_timedelta_3=date_timedelta_3,
+                           activity_graph_3=activity_graph_3,
+                           activity_graph_percentage_3=activity_graph_percentage_3,
+                           date_timedelta_4=date_timedelta_4,
+                           activity_graph_4=activity_graph_4,
+                           activity_graph_percentage_4=activity_graph_percentage_4,
+                           date_timedelta_5=date_timedelta_5,
+                           activity_graph_5=activity_graph_5,
+                           activity_graph_percentage_5=activity_graph_percentage_5,
+                           date_timedelta_6=date_timedelta_6,
+                           activity_graph_6=activity_graph_6,
+                           activity_graph_percentage_6=activity_graph_percentage_6)
+
+
+@app.route('/weeks')
+
+
+
+def generate_daily_activity_graph(timedelta):
+    time = activity_day(posts, timedelta)
+    line_chart = pygal.Line()
+    line_chart.title = 'Discord Daily Activities by Hours'
     line_chart.x_labels = map(str, range(0, 24))
     line_chart.add('Everyone', time)
-    graph_data = line_chart.render_data_uri()
+    return line_chart.render_data_uri()
 
-    activities = activity_day()
+
+def generate_daily_activity_percentage_graph(timedelta):
+    activity_percentage = activity_day_percentage(posts, timedelta)
     pie_chart = pygal.Pie()
-    pie_chart.title = 'Percentages of User Daily Activity'
-    for name, percentage in activities:
+    pie_chart.title = 'Discord Daily Activity Percentage'
+    for name, percentage in activity_percentage:
         pie_chart.add(name, round(percentage, 2))
-    graph_data2 = pie_chart.render_data_uri()
+    return pie_chart.render_data_uri()
 
-    counts, days = detail_week()
-    line_chart = pygal.Line()
-    line_chart.title = 'Discord Weekly activity'
-    line_chart.x_labels = map(str, days)
-    line_chart.add('Everyone', counts)
-    graph_data3 = line_chart.render_data_uri()
 
-    activities2 = activity_week()
-    pie_chart2 = pygal.Pie()
-    pie_chart2.title = 'Percentages of User Weekly Activity'
-    for name, percentage in activities2:
-        pie_chart2.add(name, round(percentage, 2))
-    graph_data4 = pie_chart2.render_data_uri()
+def generate_weekly_activity_graph(timedelta):
+    pass
 
-    return render_template("index.html", graph_data=graph_data,
-                           graph_data2=graph_data2,
-                           graph_data3=graph_data3,
-                           graph_data4=graph_data4)
 
-def detail_week():
+def generate_weekly_activity_percentage_graph(timedelta):
+    pass
 
-    utc_end = datetime.datetime.utcnow()
-    real_end = utc_end - datetime.timedelta(hours=7)
 
-    utc_start = utc_end - datetime.timedelta(days=6, hours=real_end.hour, minutes=real_end.minute)
-    real_start = real_end - datetime.timedelta(days=6, hours=real_end.hour, minutes=real_end.minute)
+def activity_day(messages_collection, delta):
 
-    activities = OrderedDict()
+    # Get appropriate time range
+    interval = 'day'
+    utc_start, utc_end, real_start, real_end = Util.get_times(interval, delta)
 
+    # Attempt to query by dates
     try:
-        query_results = posts.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': 'skype'})
-    except Exception:
-        return 'Could not retrieve from database. Vinh failed you'
+        query_results = messages_collection.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': 'skype'})
+    except Exception as e:
+        print(e)
+        return None
 
-    for query in query_results:
+    # If delta is 0, then you have to search for when the time is 'not yet recorded'
+    # Otherwise, all time will have been accounted for
+    if delta == 0:
+        activities_by_hours = Util.calculate_daily_activities(query_results, real_end.hour)
+    else:
+        activities_by_hours = Util.calculate_daily_activities(query_results, None)
 
-        time = query['time']
-        time = time - datetime.timedelta(hours=7)
-        day = '{} {} {}'.format(time.month, time.day, time.year)
-        string_day = datetime.datetime.strptime(day, '%m %d %Y').strftime('%A')
+    times = []
+    for x in range(0, 24):
+        times.append(activities_by_hours[x])
 
-        if string_day in activities:
-            activities[string_day] += 1
-        else:
-            activities[string_day] = 1
+    return times
 
-    message = 'Message count: {}.{}.{} -- {}.{}.{}\n' \
-              '------------------------------\n'.format(real_start.month, real_start.day,
-                                                        real_start.year, real_end.month,
-                                                        real_end.day, real_end.year)
 
-    message_count = []
-    time = []
-    for day in activities:
-        message += '{} -- {}\n'.format(day, activities[day])
-        message_count.append(activities[day])
-        time.append(day)
+def activity_day_percentage(messages_collection, timedelta):
 
-    return message_count, time
+    # Get appropriate time range
+    interval = 'day'
+    utc_start, utc_end, real_start, real_end = Util.get_times(interval, timedelta)
 
-def detail_day():
-
-    time = []
-    utc_end = datetime.datetime.utcnow()
-    real_end = utc_end - datetime.timedelta(hours=7)
-    utc_start = utc_end - datetime.timedelta(hours=real_end.hour, minutes=real_end.minute)
-    real_start = real_end - datetime.timedelta(hours=real_end.hour, minutes=real_end.minute)
-
-    messages = [0] * (real_end.hour + 1)
+    # Attempt to query by dates
     try:
-        query_results = posts.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': 'skype'})
-    except Exception:
-        return 'Could not retrieve from database. Vinh failed you'
+        query_results = messages_collection.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': 'skype'})
+    except Exception as e:
+        print(e)
+        return None
 
-    message_count = 0
-    for query in query_results:
+    # Calculate message count and activities with query_results
+    activities = Util.calculate_daily_activities_percentage(query_results)
 
-        if query['time'].hour - 7 >= 0:
-            adjusted = query['time'].hour - 7
-        else:
-            adjusted = 24 - query['time'].hour - 7
-
-        messages[adjusted] += 1
-        message_count += 1
-
-    message = 'Message count per hour for {} . {} . {}\n'.format(real_start.month,
-                                                                 real_start.day,
-                                                                 real_start.year)
-
-    for x in range(0, real_end.hour+1):
-        message += '\t{}:00   ---   {}\n'.format(x, messages[x])
-        time.append(messages[x])
-
-    return time
-
-def activity_day():
-
-    utc_end = datetime.datetime.utcnow()
-    real_end = utc_end - datetime.timedelta(hours=7)
-    utc_start = utc_end - datetime.timedelta(hours=real_end.hour, minutes=real_end.minute)
-    real_start = real_end - datetime.timedelta(hours=real_end.hour, minutes=real_end.minute)
-
-    try:
-        query_results = posts.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': 'skype'})
-    except Exception:
-        return 'Could not retrieve from database. Vinh failed you'
-
-    message_count = 0
-    activities = dict()
-
-    for query in query_results:
-        full_name = query['author'].split('#')
-        name = full_name[0]
-        if name in activities:
-            activities[name] += 1
-        else:
-            activities[name] = 1
-        message_count += 1
-
-    for activity in activities:
-        activities[activity] = activities[activity] / message_count * 100
-    sorted_activities = [(activity, activities[activity]) for activity in
-                         sorted(activities, key=activities.get, reverse=True)]
-
+    # Format message
     message = 'Activities for {} . {} . {}:\n' \
               '----------------------------\n'.format(real_start.month,
                                                       real_start.day,
                                                       real_start.year)
-
-    names = []
-    percentages = []
-    for name, percentage in sorted_activities:
+    for name, percentage in activities:
         message += '{}   --   {}%\n'.format(name, round(percentage, 2))
 
-    return sorted_activities
-
-
-def activity_week():
-
-    utc_end = datetime.datetime.utcnow()
-    real_end = utc_end - datetime.timedelta(hours=7)
-
-    utc_start = utc_end - datetime.timedelta(days=6, hours=real_end.hour, minutes=real_end.minute)
-    real_start = real_end - datetime.timedelta(days=6, hours=real_end.hour, minutes=real_end.minute)
-
-    try:
-        query_results = posts.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': 'skype'})
-    except Exception:
-        return 'Could not retrieve from database. Vinh failed you'
-
-    message_count = 0
-    activities = dict()
-    for query in query_results:
-        message_count += 1
-        full_name = query['author'].split('#')
-        name = full_name[0]
-        if name in activities:
-            activities[name] += 1
-        else:
-            activities[name] = 1
-
-    for activity in activities:
-        activities[activity] = activities[activity] / message_count * 100
-    sorted_activities = [(activity, activities[activity]) for activity in
-                         sorted(activities, key=activities.get, reverse=True)]
-
-    message = 'Activities between {}.{}.{} -- {}.{}.{}:\n' \
-              '----------------------------\n'.format(real_start.month, real_start.day,
-                                                      real_start.year, real_end.month,
-                                                      real_end.day, real_end.year)
-    for name, percentage in sorted_activities:
-        message += '{}   --   {}%\n'.format(name, round(percentage, 2))
-    return sorted_activities
+    return activities

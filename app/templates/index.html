@@ -12,41 +12,80 @@
 </head>
 
 <div class="container">
-    <center class="margin-top-10"><h3>Graph Discord</h3></center>
+    <center class="margin-top-10 text-info"><h3>Graph Discord</h3></center>
     <div class="row margin-top-50">
-        <div class="col-2 bg-light">
-            <nav class="nav flex-column">
-                <a class="nav-link active" href="#">#Skype</a>
-                <a class="nav-link" href="#">#General</a>
+        <div class="col-2">
+            <nav class="nav flex-column bg-light">
+                <a class="btn btn-outline-info active" href="#">#Skype</a>
+                <a class="nav-link text-dark" href="#" align="center">#General</a>
             </nav>
         </div>
-        <div class="col-10">
+        <div class="col-10 bg-light">
 
-            <div id="GraphCarousel" class="carousel slide bg-light" data-ride="carousel">
+            <div align="center">
+                <div class="btn-group margin-top-10" role="group" aria-label="Time intervals">
+                    <button type="button" class="btn btn-outline-info active">Days</button>
+                    <button type="button" class="btn btn-outline-info">Weeks</button>
+                    <button type="button" class="btn btn-outline-info">Months</button>
+                </div>
+            </div>
+
+            <div id="GraphCarousel" class="carousel slide margin-top-10" data-wrap="false" data-interval="false">
                 <ol class="carousel-indicators">
                     <li data-target="#GraphCarousel" data-slide-to="0" class="active"></li>
                     <li data-target="#GraphCarousel" data-slide-to="1"></li>
                 </ol>
                 <div class="carousel-inner">
-
-                    <div class="carousel-item active" align="center">
-                        <div class="margin-bottom-20">Daily Activities</div>
-                        <div>
-                            <embed type="image/svg+xml" src={{graph_data|safe}} style='max-width:400px'/>
-                            <embed type="image/svg+xml" src={{graph_data2|safe}} style='max-width:400px'/>
-                        </div>
-                    </div>
-
                     <div class="carousel-item" align="center">
-                        <div class="margin-bottom-20">Weekly Activities</div>
-                        <div>
-                            <embed type="image/svg+xml" src={{graph_data3|safe}} style='max-width:400px'/>
-                            <embed type="image/svg+xml" src={{graph_data4|safe}} style='max-width:400px'/>
+                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_6 }}</h5></div>
+                        <div class="margin-top-10">
+                            <embed type="image/svg+xml" src={{activity_graph_6|safe}} style='max-width:400px'/>
+                            <embed type="image/svg+xml" src={{activity_graph_percentage_6|safe}} style='max-width:400px'/>
                         </div>
                     </div>
-
+                    <div class="carousel-item" align="center">
+                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_5 }}</h5></div>
+                        <div class="margin-top-10">
+                            <embed type="image/svg+xml" src={{activity_graph_5|safe}} style='max-width:400px'/>
+                            <embed type="image/svg+xml" src={{activity_graph_percentage_5|safe}} style='max-width:400px'/>
+                        </div>
+                    </div>
+                    <div class="carousel-item" align="center">
+                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_4 }}</h5></div>
+                        <div class="margin-top-10">
+                            <embed type="image/svg+xml" src={{activity_graph_4|safe}} style='max-width:400px'/>
+                            <embed type="image/svg+xml" src={{activity_graph_percentage_4|safe}} style='max-width:400px'/>
+                        </div>
+                    </div>
+                    <div class="carousel-item" align="center">
+                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_3 }}</h5></div>
+                        <div class="margin-top-10">
+                            <embed type="image/svg+xml" src={{activity_graph_3|safe}} style='max-width:400px'/>
+                            <embed type="image/svg+xml" src={{activity_graph_percentage_3|safe}} style='max-width:400px'/>
+                        </div>
+                    </div>
+                    <div class="carousel-item" align="center">
+                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_2 }}</h5></div>
+                        <div class="margin-top-10">
+                            <embed type="image/svg+xml" src={{activity_graph_2|safe}} style='max-width:400px'/>
+                            <embed type="image/svg+xml" src={{activity_graph_percentage_2|safe}} style='max-width:400px'/>
+                        </div>
+                    </div>
+                    <div class="carousel-item" align="center">
+                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_1 }}</h5></div>
+                        <div class="margin-top-10">
+                            <embed type="image/svg+xml" src={{activity_graph_1|safe}} style='max-width:400px'/>
+                            <embed type="image/svg+xml" src={{activity_graph_percentage_1|safe}} style='max-width:400px'/>
+                        </div>
+                    </div>
+                    <div class="carousel-item active" align="center">
+                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_0 }}</h5></div>
+                        <div class="margin-top-10">
+                            <embed type="image/svg+xml" src={{activity_graph_0|safe}} style='max-width:400px'/>
+                            <embed type="image/svg+xml" src={{activity_graph_percentage_0|safe}} style='max-width:400px'/>
+                        </div>
+                    </div>
                 </div>
-
                 <a class="carousel-control-prev" href="#GraphCarousel" role="button" data-slide="prev">
                     <i class='fa fa-chevron-circle-left' style="color:black;"></i>
                     <span class="sr-only">Prev</span>

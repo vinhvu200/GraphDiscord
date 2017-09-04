@@ -24,52 +24,19 @@
 
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link text-info active" href="/#">Days</a>
+                    <a class="nav-link text-info" href="days">Days</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-info" href="/test">Weeks</a>
+                    <a class="nav-link text-info active" href="#">Weeks</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-info" href="#">Months</a>
                 </li>
             </ul>
+
             <div id="GraphCarousel" class="carousel slide margin-top-10 bg-light" data-wrap="false" data-interval="false">
                 <div class="carousel-inner">
-                    <div class="carousel-item" align="center">
-                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_6 }}</h5></div>
-                        <div class="margin-top-10">
-                            <embed type="image/svg+xml" src={{activity_graph_6|safe}} style='max-width:400px'/>
-                            <embed type="image/svg+xml" src={{activity_graph_percentage_6|safe}} style='max-width:400px'/>
-                        </div>
-                    </div>
-                    <div class="carousel-item" align="center">
-                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_5 }}</h5></div>
-                        <div class="margin-top-10">
-                            <embed type="image/svg+xml" src={{activity_graph_5|safe}} style='max-width:400px'/>
-                            <embed type="image/svg+xml" src={{activity_graph_percentage_5|safe}} style='max-width:400px'/>
-                        </div>
-                    </div>
-                    <div class="carousel-item" align="center">
-                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_4 }}</h5></div>
-                        <div class="margin-top-10">
-                            <embed type="image/svg+xml" src={{activity_graph_4|safe}} style='max-width:400px'/>
-                            <embed type="image/svg+xml" src={{activity_graph_percentage_4|safe}} style='max-width:400px'/>
-                        </div>
-                    </div>
-                    <div class="carousel-item" align="center">
-                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_3 }}</h5></div>
-                        <div class="margin-top-10">
-                            <embed type="image/svg+xml" src={{activity_graph_3|safe}} style='max-width:400px'/>
-                            <embed type="image/svg+xml" src={{activity_graph_percentage_3|safe}} style='max-width:400px'/>
-                        </div>
-                    </div>
-                    <div class="carousel-item" align="center">
-                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_2 }}</h5></div>
-                        <div class="margin-top-10">
-                            <embed type="image/svg+xml" src={{activity_graph_2|safe}} style='max-width:400px'/>
-                            <embed type="image/svg+xml" src={{activity_graph_percentage_2|safe}} style='max-width:400px'/>
-                        </div>
-                    </div>
+
                     <div class="carousel-item" align="center">
                         <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_1 }}</h5></div>
                         <div class="margin-top-10">
@@ -94,6 +61,7 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
+
         </div>
     </div>
 </div>

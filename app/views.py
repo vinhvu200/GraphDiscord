@@ -19,7 +19,8 @@ posts = db.messages
 
 @app.route('/')
 @app.route('/days')
-def test():
+@app.route('/index')
+def index():
 
     # Current day activities
     timedelta = 0
@@ -123,8 +124,41 @@ def test():
                            activity_graph_percentage_6=activity_graph_percentage_6)
 
 
-@app.route('/weeks')
+#@app.route('/')
+@app.route('/test')
+def test():
 
+    # Generate graphs for current week
+    timedelta = 0
+    interval = 'week'
+    _, _, real_start, real_end = Util.get_times(interval, timedelta)
+    date_timedelta_0 = 'Between: {} / {} / {}  ---  {} / {} / {}'.format(real_start.month,
+                                                                      real_start.day,
+                                                                      real_start.year,
+                                                                      real_end.month,
+                                                                      real_end.day,
+                                                                      real_end.year)
+    activity_graph_0 = generate_weekly_activity_graph(timedelta)
+    activity_graph_percentage_0 = generate_weekly_activity_percentage_graph(timedelta)
+
+    # Generate graphs for last week
+    timedelta = 1
+    _, _, real_start, real_end = Util.get_times(interval, timedelta)
+    date_timedelta_1 = 'Between: {} . {} . {}  ---  {} . {} . {}'.format(real_start.month,
+                                                                      real_start.day,
+                                                                      real_start.year,
+                                                                      real_end.month,
+                                                                      real_end.day,
+                                                                      real_end.year)
+    activity_graph_1 = generate_weekly_activity_graph(timedelta)
+    activity_graph_percentage_1 = generate_weekly_activity_percentage_graph(timedelta)
+    return render_template("weeks.html",
+                           date_timedelta_0=date_timedelta_0,
+                           activity_graph_0=activity_graph_0,
+                           activity_graph_percentage_0=activity_graph_percentage_0,
+                           date_timedelta_1=date_timedelta_1,
+                           activity_graph_1=activity_graph_1,
+                           activity_graph_percentage_1=activity_graph_percentage_1)
 
 
 def generate_daily_activity_graph(timedelta):
@@ -146,11 +180,22 @@ def generate_daily_activity_percentage_graph(timedelta):
 
 
 def generate_weekly_activity_graph(timedelta):
-    pass
+
+    days, message_counts = activity_week(posts, timedelta)
+    line_chart = pygal.Line()
+    line_chart.title = 'Discord Weekly activity'
+    line_chart.x_labels = map(str, days)
+    line_chart.add('Everyone', message_counts)
+    return line_chart.render_data_uri()
 
 
 def generate_weekly_activity_percentage_graph(timedelta):
-    pass
+    activities = activity_week_percentage(posts, timedelta)
+    pie_chart = pygal.Pie()
+    pie_chart.title = 'Percentages of User Weekly Activity'
+    for name, percentage in activities:
+        pie_chart.add(name, round(percentage, 2))
+    return pie_chart.render_data_uri()
 
 
 def activity_day(messages_collection, delta):
@@ -201,6 +246,60 @@ def activity_day_percentage(messages_collection, timedelta):
               '----------------------------\n'.format(real_start.month,
                                                       real_start.day,
                                                       real_start.year)
+    for name, percentage in activities:
+        message += '{}   --   {}%\n'.format(name, round(percentage, 2))
+
+    return activities
+
+
+def activity_week(messages_collection, delta):
+    # Get appropriate time range
+    interval = 'week'
+    utc_start, utc_end, real_start, real_end = Util.get_times(interval, delta)
+
+    # Attempt to query by dates
+    try:
+        query_results = messages_collection.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': 'skype'})
+    except Exception as e:
+        print(e)
+        return 'Could not retrieve from database. Vinh failed you'
+
+    # Get weekly activities
+    activities = Util.calculate_weekly_activities(query_results)
+
+    # Format Message
+    message = 'Message count: {}.{}.{} -- {}.{}.{}\n' \
+              '------------------------------\n'.format(real_start.month, real_start.day,
+                                                        real_start.year, real_end.month,
+                                                        real_end.day, real_end.year)
+
+    days = []
+    message_count = []
+    for day in activities:
+        message += '{} -- {}\n'.format(day, activities[day])
+        days.append(day)
+        message_count.append(activities[day])
+
+    return days, message_count
+
+
+def activity_week_percentage(messages_collection, delta):
+    # Get appropriate time range
+    interval = 'week'
+    utc_start, utc_end, real_start, real_end = Util.get_times(interval, delta)
+
+    # Attempt to query by dates
+    try:
+        query_results = messages_collection.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': 'skype'})
+    except Exception:
+        return 'Could not retrieve from database. Vinh failed you'
+
+    activities = Util.calculate_weekly_activities_percentage(query_results)
+
+    message = 'Activities between {}.{}.{} -- {}.{}.{}:\n' \
+              '----------------------------\n'.format(real_start.month, real_start.day,
+                                                      real_start.year, real_end.month,
+                                                      real_end.day, real_end.year)
     for name, percentage in activities:
         message += '{}   --   {}%\n'.format(name, round(percentage, 2))
 

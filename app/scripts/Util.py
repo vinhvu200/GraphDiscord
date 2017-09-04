@@ -1,4 +1,5 @@
 import datetime
+from collections import OrderedDict
 
 
 def calculate_daily_activities(query_results, max_hour):
@@ -24,6 +25,52 @@ def calculate_daily_activities_percentage(query_results):
     message_count = 0
     activities = dict()
 
+    for query in query_results:
+        message_count += 1
+        name = query['author'].split('#')[0]
+        if name in activities:
+            activities[name] += 1
+        else:
+            activities[name] = 1
+
+    for activity in activities:
+        activities[activity] = activities[activity] / message_count * 100
+    sorted_activities = [(activity, activities[activity]) for activity in
+                         sorted(activities, key=activities.get, reverse=True)]
+
+    return sorted_activities
+
+
+def calculate_weekly_activities(query_results):
+
+    activities = OrderedDict()
+    activities['Monday'] = None
+    activities['Tuesday'] = None
+    activities['Wednesday'] = None
+    activities['Thursday'] = None
+    activities['Friday'] = None
+    activities['Saturday'] = None
+    activities['Sunday'] = None
+
+    for query in query_results:
+
+        time = query['time']
+        time = time - datetime.timedelta(hours=7)
+        day = '{} {} {}'.format(time.month, time.day, time.year)
+        string_day = datetime.datetime.strptime(day, '%m %d %Y').strftime('%A')
+
+        if activities[string_day] is None:
+            activities[string_day] = 1
+        else:
+            activities[string_day] += 1
+
+    return activities
+
+
+def calculate_weekly_activities_percentage(query_results):
+
+    message_count = 0
+    activities = dict()
     for query in query_results:
         message_count += 1
         name = query['author'].split('#')[0]

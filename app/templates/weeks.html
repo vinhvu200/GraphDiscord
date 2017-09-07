@@ -38,6 +38,13 @@
                 <div class="carousel-inner">
 
                     <div class="carousel-item" align="center">
+                        <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_2 }}</h5></div>
+                        <div class="margin-top-10">
+                            <embed type="image/svg+xml" src={{activity_graph_2|safe}} style='max-width:400px'/>
+                            <embed type="image/svg+xml" src={{activity_graph_percentage_2|safe}} style='max-width:400px'/>
+                        </div>
+                    </div>
+                    <div class="carousel-item" align="center">
                         <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_1 }}</h5></div>
                         <div class="margin-top-10">
                             <embed type="image/svg+xml" src={{activity_graph_1|safe}} style='max-width:400px'/>

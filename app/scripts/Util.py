@@ -87,6 +87,27 @@ def calculate_weekly_activities_percentage(query_results):
     return sorted_activities
 
 
+def get_date_timedelta(interval, timedelta):
+
+    if interval == 'day':
+        _, _, real_start, _ = get_times(interval, timedelta)
+        date = '{} / {} / {}'.format(real_start.month, real_start.day, real_start.year)
+        string_day = datetime.datetime.strptime(date, '%m / %d / %Y').strftime('%A')
+        format_date = '{} {}'.format(string_day, date)
+        return format_date
+    elif interval == 'week':
+        _, _, real_start, real_end = get_times(interval, timedelta)
+        date = 'Between: {} / {} / {}  -  {} / {} / {}'.format(real_start.month,
+                                                                 real_start.day,
+                                                                 real_start.year,
+                                                                 real_end.month,
+                                                                 real_end.day,
+                                                                 real_end.year)
+        return date
+
+    return None
+
+
 def get_times(interval, delta):
 
     if interval == 'day':

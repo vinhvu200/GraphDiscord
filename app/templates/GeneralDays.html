@@ -11,29 +11,30 @@
     <link rel='stylesheet' href="{{ url_for('static', filename='Font-Awesome/css/font-awesome.min.css')}}">
 </head>
 
-<div class="container">
-    <center class="margin-top-10 text-info"><h3>Graph Discord</h3></center>
-    <div class="row margin-top-50">
-        <div class="col-2">
-            <nav class="nav flex-column bg-light">
-                <a class="btn btn-outline-info active" href="#">#Skype</a>
-                <a class="nav-link text-dark" href="/GeneralDays" align="center">#General</a>
-            </nav>
-        </div>
-        <div class="col-10">
+<body>
+    <div class="container">
+        <center class="margin-top-10 text-info"><h3>Graph Discord</h3></center>
+        <div class="row margin-top-50">
+            <div class="col-2">
+                <nav class="nav flex-column bg-light">
+                    <a class="btn btn-light" href="/SkypeDays">#Skype</a>
+                    <a class="btn btn-outline-info active" href="#" align="center">#General</a>
+                </nav>
+            </div>
+            <div class="col-10">
 
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link text-info active" href="/#">Days</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-info" href="/SkypeWeeks">Weeks</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-info" href="#">Months</a>
-                </li>
-            </ul>
-            <div id="GraphCarousel" class="carousel slide margin-top-10 bg-light" data-wrap="false" data-interval="false">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link text-info active" href="#">Days</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-info" href="/GeneralWeeks">Weeks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-info" href="#">Months</a>
+                    </li>
+                </ul>
+                <div id="GraphCarousel" class="carousel slide margin-top-10 bg-light" data-wrap="false" data-interval="false">
                 <div class="carousel-inner">
                     <div class="carousel-item" align="center">
                         <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_6 }}</h5></div>
@@ -94,11 +95,12 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
+
+            </div>
         </div>
     </div>
-</div>
 
-<script type=text/javascript src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
-
+    <script type=text/javascript src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+</body>
 </html>

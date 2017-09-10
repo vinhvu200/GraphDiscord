@@ -20,7 +20,7 @@ posts = db.messages
 
 #@app.route('/')
 @app.route('/SkypeDays')
-#@app.route('/index')
+@app.route('/index')
 def index():
 
     interval = 'day'
@@ -137,6 +137,7 @@ def GeneralDays():
                            activity_graph_6=activity_graphs[6],
                            activity_graph_percentage_6=activity_graphs_percentages[6])
 
+
 @app.route('/GeneralWeeks')
 def GeneralWeeks():
     interval = 'week'
@@ -164,3 +165,8 @@ def GeneralWeeks():
                            date_timedelta_2=dates[2],
                            activity_graph_2=activity_graphs[2],
                            activity_graph_percentage_2=activity_graphs_percentages[2])
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html")

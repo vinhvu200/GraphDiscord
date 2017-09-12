@@ -1,9 +1,8 @@
-import datetime
+import threading
+import time
 
-import pygal
 from flask import render_template
 from pymongo import MongoClient
-
 from app import app
 from app.scripts import Util
 from app.scripts import Graph
@@ -17,128 +16,216 @@ mongo_client = MongoClient(link)
 db = mongo_client.discord_data
 posts = db.messages
 
-@app.route('/GeneralDays')
-@app.route('/')
-def generalDays():
+
+general_day_dates = []
+general_day_activity_graphs = []
+general_day_activity_graphs_percentages = []
+general_day_lock = threading.Lock()
+
+general_week_dates = []
+general_week_activity_graphs = []
+general_week_activity_graphs_percentages = []
+general_week_lock = threading.Lock()
+
+skype_day_dates = []
+skype_day_activity_graphs = []
+skype_day_activity_graphs_percentages = []
+skype_day_lock = threading.Lock()
+
+
+def update_general_day(lock):
     interval = 'day'
     channel = 'general'
 
-    # Lists to hold information for each Carousel slide
-    dates = []
-    activity_graphs = []
-    activity_graphs_percentages = []
+    while True:
+        have_it = lock.acquire(0)
+        try:
+            if have_it:
+                for timedelta in range(0, 7):
+                    date = Util.get_date_timedelta(interval, timedelta)
+                    activity_graph = Graph.generate_daily_activity_graph(posts, timedelta, channel)
+                    activity_graph_percentage = Graph.generate_daily_activity_percentage_graph(posts, timedelta, channel)
 
-    # Generate graphs for each day in the last week
-    for timedelta in range(0, 7):
-        date = Util.get_date_timedelta(interval, timedelta)
-        activity_graph = Graph.generate_daily_activity_graph(posts, timedelta, channel)
-        activity_graph_percentage = Graph.generate_daily_activity_percentage_graph(posts, timedelta, channel)
+                    general_day_dates.append(date)
+                    general_day_activity_graphs.append(activity_graph)
+                    general_day_activity_graphs_percentages.append(activity_graph_percentage)
+        finally:
+            if have_it:
+                lock.release()
 
-        dates.append(date)
-        activity_graphs.append(activity_graph)
-        activity_graphs_percentages.append(activity_graph_percentage)
+        if have_it:
+            time.sleep(60)
+        else:
+            time.sleep(1)
 
-    return render_template("GeneralDays.html",
-                           date_timedelta_0=dates[0],
-                           activity_graph_0=activity_graphs[0],
-                           activity_graph_percentage_0=activity_graphs_percentages[0],
-                           date_timedelta_1=dates[1],
-                           activity_graph_1=activity_graphs[1],
-                           activity_graph_percentage_1=activity_graphs_percentages[1],
-                           date_timedelta_2=dates[2],
-                           activity_graph_2=activity_graphs[2],
-                           activity_graph_percentage_2=activity_graphs_percentages[2],
-                           date_timedelta_3=dates[3],
-                           activity_graph_3=activity_graphs[3],
-                           activity_graph_percentage_3=activity_graphs_percentages[3],
-                           date_timedelta_4=dates[4],
-                           activity_graph_4=activity_graphs[4],
-                           activity_graph_percentage_4=activity_graphs_percentages[4],
-                           date_timedelta_5=dates[5],
-                           activity_graph_5=activity_graphs[5],
-                           activity_graph_percentage_5=activity_graphs_percentages[5],
-                           date_timedelta_6=dates[6],
-                           activity_graph_6=activity_graphs[6],
-                           activity_graph_percentage_6=activity_graphs_percentages[6])
+
+def update_general_week(lock):
+    interval = 'week'
+    channel = 'general'
+    while True:
+        have_it = lock.acquire(0)
+        try:
+            if have_it:
+                for timedelta in range(0, 3):
+                    date = Util.get_date_timedelta(interval, timedelta)
+                    activity_graph = Graph.generate_weekly_activity_graph(posts, timedelta, channel)
+                    activity_graph_percentage = \
+                        Graph.generate_weekly_activity_percentage_graph(posts, timedelta, channel)
+
+                    general_week_dates.append(date)
+                    general_week_activity_graphs.append(activity_graph)
+                    general_week_activity_graphs_percentages.append(activity_graph_percentage)
+        finally:
+            if have_it:
+                lock.release()
+
+        if have_it:
+            time.sleep(60)
+        else:
+            time.sleep(1)
+
+
+def update_skype_day(lock):
+    interval = 'day'
+    channel = 'skype'
+    while True:
+        have_it = lock.acquire(0)
+        try:
+            if have_it:
+                # Generate graphs for each day in the last week
+                for timedelta in range(0, 7):
+                    date = Util.get_date_timedelta(interval, timedelta)
+                    activity_graph = Graph.generate_daily_activity_graph(posts, timedelta, channel)
+                    activity_graph_percentage = Graph.generate_daily_activity_percentage_graph(posts, timedelta,
+                                                                                               channel)
+
+                    skype_day_dates.append(date)
+                    skype_day_activity_graphs.append(activity_graph)
+                    skype_day_activity_graphs_percentages.append(activity_graph_percentage)
+        finally:
+            if have_it:
+                lock.release()
+
+        if have_it:
+            time.sleep(60)
+        else:
+            time.sleep(1)
+
+
+general_day_thread = threading.Thread(
+    target=update_general_day,
+    args=(general_day_lock,),
+    name='general_day_thread'
+)
+general_day_thread.start()
+
+general_week_thread = threading.Thread(
+    target=update_general_week,
+    args=(general_week_lock,),
+    name='general_week_thread'
+)
+general_week_thread.start()
+
+skype_day_thread = threading.Thread(
+    target=update_skype_day,
+    args=(skype_day_lock,),
+    name='skype_day_thread'
+)
+skype_day_thread.start()
+
+
+@app.route('/GeneralDays')
+@app.route('/')
+def general_days():
+
+    have_it = general_day_lock.acquire(0)
+    while not have_it:
+        have_it = general_day_lock.acquire(0)
+        time.sleep(1)
+
+    template = render_template("GeneralDays.html",
+                               date_timedelta_0=general_day_dates[0],
+                               activity_graph_0=general_day_activity_graphs[0],
+                               activity_graph_percentage_0=general_day_activity_graphs_percentages[0],
+                               date_timedelta_1=general_day_dates[1],
+                               activity_graph_1=general_day_activity_graphs[1],
+                               activity_graph_percentage_1=general_day_activity_graphs_percentages[1],
+                               date_timedelta_2=general_day_dates[2],
+                               activity_graph_2=general_day_activity_graphs[2],
+                               activity_graph_percentage_2=general_day_activity_graphs_percentages[2],
+                               date_timedelta_3=general_day_dates[3],
+                               activity_graph_3=general_day_activity_graphs[3],
+                               activity_graph_percentage_3=general_day_activity_graphs_percentages[3],
+                               date_timedelta_4=general_day_dates[4],
+                               activity_graph_4=general_day_activity_graphs[4],
+                               activity_graph_percentage_4=general_day_activity_graphs_percentages[4],
+                               date_timedelta_5=general_day_dates[5],
+                               activity_graph_5=general_day_activity_graphs[5],
+                               activity_graph_percentage_5=general_day_activity_graphs_percentages[5],
+                               date_timedelta_6=general_day_dates[6],
+                               activity_graph_6=general_day_activity_graphs[6],
+                               activity_graph_percentage_6=general_day_activity_graphs_percentages[6])
+    general_day_lock.release()
+    return template
 
 
 @app.route('/GeneralWeeks')
-def generalWeeks():
-    interval = 'week'
-    channel = 'general'
+def general_weeks():
+    have_it = general_week_lock.acquire(0)
+    while not have_it:
+        have_it = general_week_lock.acquire(0)
+        time.sleep(1)
 
-    dates = []
-    activity_graphs = []
-    activity_graphs_percentages = []
-    for timedelta in range(0, 3):
-        date = Util.get_date_timedelta(interval, timedelta)
-        activity_graph = Graph.generate_weekly_activity_graph(posts, timedelta, channel)
-        activity_graph_percentage = Graph.generate_weekly_activity_percentage_graph(posts, timedelta, channel)
-
-        dates.append(date)
-        activity_graphs.append(activity_graph)
-        activity_graphs_percentages.append(activity_graph_percentage)
-
-    return render_template("GeneralWeeks.html",
-                           date_timedelta_0=dates[0],
-                           activity_graph_0=activity_graphs[0],
-                           activity_graph_percentage_0=activity_graphs_percentages[0],
-                           date_timedelta_1=dates[1],
-                           activity_graph_1=activity_graphs[1],
-                           activity_graph_percentage_1=activity_graphs_percentages[1],
-                           date_timedelta_2=dates[2],
-                           activity_graph_2=activity_graphs[2],
-                           activity_graph_percentage_2=activity_graphs_percentages[2])
+    template = render_template("GeneralWeeks.html",
+                           date_timedelta_0=general_week_dates[0],
+                           activity_graph_0=general_week_activity_graphs[0],
+                           activity_graph_percentage_0=general_week_activity_graphs_percentages[0],
+                           date_timedelta_1=general_week_dates[1],
+                           activity_graph_1=general_week_activity_graphs[1],
+                           activity_graph_percentage_1=general_week_activity_graphs_percentages[1],
+                           date_timedelta_2=general_week_dates[2],
+                           activity_graph_2=general_week_activity_graphs[2],
+                           activity_graph_percentage_2=general_week_activity_graphs_percentages[2])
+    general_week_lock.release()
+    return template
 
 
 @app.route('/SkypeDays')
 @app.route('/index')
-def skypeDays():
+def skype_days():
+    have_it = skype_day_lock.acquire(0)
+    while not have_it:
+        have_it = skype_day_lock.acquire(0)
+        time.sleep(1)
 
-    interval = 'day'
-    channel = 'skype'
-
-    # Lists to hold information for each Carousel slide
-    dates = []
-    activity_graphs = []
-    activity_graphs_percentages = []
-
-    # Generate graphs for each day in the last week
-    for timedelta in range(0, 7):
-        date = Util.get_date_timedelta(interval, timedelta)
-        activity_graph = Graph.generate_daily_activity_graph(posts, timedelta, channel)
-        activity_graph_percentage = Graph.generate_daily_activity_percentage_graph(posts, timedelta, channel)
-
-        dates.append(date)
-        activity_graphs.append(activity_graph)
-        activity_graphs_percentages.append(activity_graph_percentage)
-
-    return render_template("SkypeDays.html",
-                           date_timedelta_0=dates[0],
-                           activity_graph_0=activity_graphs[0],
-                           activity_graph_percentage_0=activity_graphs_percentages[0],
-                           date_timedelta_1=dates[1],
-                           activity_graph_1=activity_graphs[1],
-                           activity_graph_percentage_1=activity_graphs_percentages[1],
-                           date_timedelta_2=dates[2],
-                           activity_graph_2=activity_graphs[2],
-                           activity_graph_percentage_2=activity_graphs_percentages[2],
-                           date_timedelta_3=dates[3],
-                           activity_graph_3=activity_graphs[3],
-                           activity_graph_percentage_3=activity_graphs_percentages[3],
-                           date_timedelta_4=dates[4],
-                           activity_graph_4=activity_graphs[4],
-                           activity_graph_percentage_4=activity_graphs_percentages[4],
-                           date_timedelta_5=dates[5],
-                           activity_graph_5=activity_graphs[5],
-                           activity_graph_percentage_5=activity_graphs_percentages[5],
-                           date_timedelta_6=dates[6],
-                           activity_graph_6=activity_graphs[6],
-                           activity_graph_percentage_6=activity_graphs_percentages[6])
+    template = render_template("SkypeDays.html",
+                           date_timedelta_0=skype_day_dates[0],
+                           activity_graph_0=skype_day_activity_graphs[0],
+                           activity_graph_percentage_0=skype_day_activity_graphs_percentages[0],
+                           date_timedelta_1=skype_day_dates[1],
+                           activity_graph_1=skype_day_activity_graphs[1],
+                           activity_graph_percentage_1=skype_day_activity_graphs_percentages[1],
+                           date_timedelta_2=skype_day_dates[2],
+                           activity_graph_2=skype_day_activity_graphs[2],
+                           activity_graph_percentage_2=skype_day_activity_graphs_percentages[2],
+                           date_timedelta_3=skype_day_dates[3],
+                           activity_graph_3=skype_day_activity_graphs[3],
+                           activity_graph_percentage_3=skype_day_activity_graphs_percentages[3],
+                           date_timedelta_4=skype_day_dates[4],
+                           activity_graph_4=skype_day_activity_graphs[4],
+                           activity_graph_percentage_4=skype_day_activity_graphs_percentages[4],
+                           date_timedelta_5=skype_day_dates[5],
+                           activity_graph_5=skype_day_activity_graphs[5],
+                           activity_graph_percentage_5=skype_day_activity_graphs_percentages[5],
+                           date_timedelta_6=skype_day_dates[6],
+                           activity_graph_6=skype_day_activity_graphs[6],
+                           activity_graph_percentage_6=skype_day_activity_graphs_percentages[6])
+    skype_day_lock.release()
+    return template
 
 
 @app.route('/SkypeWeeks')
-def skypeWeeks():
+def skype_weeks():
 
     interval = 'week'
     channel = 'skype'

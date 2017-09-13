@@ -1,5 +1,5 @@
 # GraphDiscord
-Displays random data from discord channels
+Graphs chat activities in last couple days/weeks/months
 
 Check it out at either:
 - http://54.202.140.35

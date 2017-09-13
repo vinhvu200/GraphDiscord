@@ -50,6 +50,7 @@ def activity_day(messages_collection, delta, channel):
     try:
         query_results = messages_collection.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': channel})
     except Exception as e:
+        print('inside: activity day')
         print(e)
         return None
 
@@ -77,6 +78,7 @@ def activity_day_percentage(messages_collection, timedelta, channel):
     try:
         query_results = messages_collection.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': channel})
     except Exception as e:
+        print('inside: activity day percentage')
         print(e)
         return None
 
@@ -133,7 +135,9 @@ def activity_week_percentage(messages_collection, delta, channel):
     # Attempt to query by dates
     try:
         query_results = messages_collection.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': channel})
-    except Exception:
+    except Exception as e:
+        print('inside activity week percentage')
+        print(e)
         return 'Could not retrieve from database. Vinh failed you'
 
     activities = Util.calculate_weekly_activities_percentage(query_results)

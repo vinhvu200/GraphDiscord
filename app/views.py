@@ -40,7 +40,7 @@ skype_week_lock = threading.Lock()
 
 def update_general_day(lock):
     interval = 'day'
-    channel = 'skype'
+    channel = 'general'
 
     while True:
         have_it = lock.acquire(0)
@@ -70,7 +70,7 @@ def update_general_day(lock):
 
 def update_general_week(lock):
     interval = 'week'
-    channel = 'skype'
+    channel = 'general'
     while True:
         have_it = lock.acquire(0)
         try:
@@ -78,7 +78,6 @@ def update_general_week(lock):
                 del general_week_dates[:]
                 del general_week_activity_graphs[:]
                 del general_week_activity_graphs_percentages[:]
-                print('updating general week')
                 for timedelta in range(0, 3):
                     date = Util.get_date_timedelta(interval, timedelta)
                     activity_graph = Graph.generate_weekly_activity_graph(posts, timedelta, channel)
@@ -88,7 +87,6 @@ def update_general_week(lock):
                     general_week_dates.append(date)
                     general_week_activity_graphs.append(activity_graph)
                     general_week_activity_graphs_percentages.append(activity_graph_percentage)
-                print('finished updating general week')
         finally:
             if have_it:
                 lock.release()
@@ -139,7 +137,7 @@ def update_skype_week(lock):
         have_it = lock.acquire(0)
         try:
             if have_it:
-                
+
                 del skype_week_dates[:]
                 del skype_week_activity_graphs[:]
                 del skype_week_activity_graphs_percentages[:]

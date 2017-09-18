@@ -2,20 +2,12 @@ import threading
 import time
 
 from flask import render_template
-from pymongo import MongoClient
 from app import app
 from app.scripts import Util
 from app.scripts import Graph
+from database import get_collection
 
-# Getting credentials
-f = open('Stuff.txt', 'r')
-link = f.readline()
-f.close()
-
-mongo_client = MongoClient(link)
-db = mongo_client.discord_data
-posts = db.messages
-
+messages = get_collection()
 
 general_day_dates = []
 general_day_activity_graphs = []
@@ -51,8 +43,8 @@ def update_general_day(lock):
                 del general_day_activity_graphs_percentages[:]
                 for timedelta in range(0, 7):
                     date = Util.get_date_timedelta(interval, timedelta)
-                    activity_graph = Graph.generate_daily_activity_graph(posts, timedelta, channel)
-                    activity_graph_percentage = Graph.generate_daily_activity_percentage_graph(posts, timedelta, channel)
+                    activity_graph = Graph.generate_daily_activity_graph(messages, timedelta, channel)
+                    activity_graph_percentage = Graph.generate_daily_activity_percentage_graph(messages, timedelta, channel)
 
                     general_day_dates.append(date)
                     general_day_activity_graphs.append(activity_graph)
@@ -62,7 +54,7 @@ def update_general_day(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(60)
+            time.sleep(600)
         else:
             print('did not get lock and retrying')
             time.sleep(1)
@@ -80,9 +72,9 @@ def update_general_week(lock):
                 del general_week_activity_graphs_percentages[:]
                 for timedelta in range(0, 3):
                     date = Util.get_date_timedelta(interval, timedelta)
-                    activity_graph = Graph.generate_weekly_activity_graph(posts, timedelta, channel)
+                    activity_graph = Graph.generate_weekly_activity_graph(messages, timedelta, channel)
                     activity_graph_percentage = \
-                        Graph.generate_weekly_activity_percentage_graph(posts, timedelta, channel)
+                        Graph.generate_weekly_activity_percentage_graph(messages, timedelta, channel)
 
                     general_week_dates.append(date)
                     general_week_activity_graphs.append(activity_graph)
@@ -92,7 +84,7 @@ def update_general_week(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(60)
+            time.sleep(600)
         else:
             time.sleep(1)
 
@@ -112,8 +104,8 @@ def update_skype_day(lock):
                 # Generate graphs for each day in the last week
                 for timedelta in range(0, 7):
                     date = Util.get_date_timedelta(interval, timedelta)
-                    activity_graph = Graph.generate_daily_activity_graph(posts, timedelta, channel)
-                    activity_graph_percentage = Graph.generate_daily_activity_percentage_graph(posts, timedelta,
+                    activity_graph = Graph.generate_daily_activity_graph(messages, timedelta, channel)
+                    activity_graph_percentage = Graph.generate_daily_activity_percentage_graph(messages, timedelta,
                                                                                                channel)
 
                     skype_day_dates.append(date)
@@ -124,7 +116,7 @@ def update_skype_day(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(60)
+            time.sleep(600)
         else:
             time.sleep(1)
 
@@ -144,8 +136,8 @@ def update_skype_week(lock):
 
                 for timedelta in range(0, 3):
                     date = Util.get_date_timedelta(interval, timedelta)
-                    activity_graph = Graph.generate_weekly_activity_graph(posts, timedelta, channel)
-                    activity_graph_percentage = Graph.generate_weekly_activity_percentage_graph(posts, timedelta, channel)
+                    activity_graph = Graph.generate_weekly_activity_graph(messages, timedelta, channel)
+                    activity_graph_percentage = Graph.generate_weekly_activity_percentage_graph(messages, timedelta, channel)
 
                     skype_week_dates.append(date)
                     skype_week_activity_graphs.append(activity_graph)
@@ -155,7 +147,7 @@ def update_skype_week(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(60)
+            time.sleep(600)
         else:
             time.sleep(1)
 

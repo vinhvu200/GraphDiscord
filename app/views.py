@@ -1,13 +1,9 @@
-import threading
-import time
+import threading, time
 
 from flask import render_template
 from app import app
-from app.scripts import Util
-from app.scripts import Graph
-from database import get_collection
-
-messages = get_collection()
+from app.scripts import Util, Graph
+from database import get_collection, get_client, get_db
 
 general_day_dates = []
 general_day_activity_graphs = []
@@ -38,6 +34,9 @@ def update_general_day(lock):
         have_it = lock.acquire(0)
         try:
             if have_it:
+                client = get_client()
+                db = get_db(client)
+                messages = get_collection(db)
                 del general_day_dates[:]
                 del general_day_activity_graphs[:]
                 del general_day_activity_graphs_percentages[:]
@@ -51,6 +50,7 @@ def update_general_day(lock):
                     general_day_activity_graphs_percentages.append(activity_graph_percentage)
         finally:
             if have_it:
+                client.close()
                 lock.release()
 
         if have_it:
@@ -67,6 +67,9 @@ def update_general_week(lock):
         have_it = lock.acquire(0)
         try:
             if have_it:
+                client = get_client()
+                db = get_db(client)
+                messages = get_collection(db)
                 del general_week_dates[:]
                 del general_week_activity_graphs[:]
                 del general_week_activity_graphs_percentages[:]
@@ -81,6 +84,7 @@ def update_general_week(lock):
                     general_week_activity_graphs_percentages.append(activity_graph_percentage)
         finally:
             if have_it:
+                client.close()
                 lock.release()
 
         if have_it:
@@ -96,7 +100,9 @@ def update_skype_day(lock):
         have_it = lock.acquire(0)
         try:
             if have_it:
-
+                client = get_client()
+                db = get_db(client)
+                messages = get_collection(db)
                 del skype_day_dates[:]
                 del skype_day_activity_graphs[:]
                 del skype_day_activity_graphs_percentages[:]
@@ -113,6 +119,7 @@ def update_skype_day(lock):
                     skype_day_activity_graphs_percentages.append(activity_graph_percentage)
         finally:
             if have_it:
+                client.close()
                 lock.release()
 
         if have_it:
@@ -129,7 +136,9 @@ def update_skype_week(lock):
         have_it = lock.acquire(0)
         try:
             if have_it:
-
+                client = get_client()
+                db = get_db(client)
+                messages = get_collection(db)
                 del skype_week_dates[:]
                 del skype_week_activity_graphs[:]
                 del skype_week_activity_graphs_percentages[:]
@@ -144,6 +153,7 @@ def update_skype_week(lock):
                     skype_week_activity_graphs_percentages.append(activity_graph_percentage)
         finally:
             if have_it:
+                client.close()
                 lock.release()
 
         if have_it:

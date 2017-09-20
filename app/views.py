@@ -52,10 +52,10 @@ def update_general_day(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(600)
+            time.sleep(10)
         else:
             print('did not get lock and retrying')
-            time.sleep(1)
+            time.sleep(2)
 
 
 def update_general_week(lock):
@@ -84,9 +84,9 @@ def update_general_week(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(600)
+            time.sleep(10)
         else:
-            time.sleep(1)
+            time.sleep(2)
 
 
 def update_skype_day(lock):
@@ -117,9 +117,9 @@ def update_skype_day(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(600)
+            time.sleep(10)
         else:
-            time.sleep(1)
+            time.sleep(2)
 
 
 def update_skype_week(lock):
@@ -149,9 +149,9 @@ def update_skype_week(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(600)
+            time.sleep(10)
         else:
-            time.sleep(1)
+            time.sleep(2)
 
 
 general_day_thread = threading.Thread(
@@ -184,13 +184,13 @@ skype_week_thread.start()
 
 
 @app.route('/GeneralDays')
-#@app.route('/')
+@app.route('/')
 def general_days():
 
     have_it = general_day_lock.acquire(0)
     while not have_it:
         have_it = general_day_lock.acquire(0)
-        time.sleep(1)
+        time.sleep(2)
 
     template = render_template("GeneralDays.html",
                                date_timedelta_0=general_day_dates[0],
@@ -224,7 +224,7 @@ def general_weeks():
     have_it = general_week_lock.acquire(0)
     while not have_it:
         have_it = general_week_lock.acquire(0)
-        time.sleep(1)
+        time.sleep(2)
 
     template = render_template("GeneralWeeks.html",
                                date_timedelta_0=general_week_dates[0],
@@ -246,7 +246,7 @@ def skype_days():
     have_it = skype_day_lock.acquire(0)
     while not have_it:
         have_it = skype_day_lock.acquire(0)
-        time.sleep(1)
+        time.sleep(2)
 
     template = render_template("SkypeDays.html",
                                date_timedelta_0=skype_day_dates[0],
@@ -279,7 +279,7 @@ def skype_weeks():
     have_it = skype_week_lock.acquire(0)
     while not have_it:
         have_it = skype_week_lock.acquire(0)
-        time.sleep(1)
+        time.sleep(2)
 
     template = render_template("SkypeWeeks.html",
                                date_timedelta_0=skype_week_dates[0],
@@ -301,8 +301,8 @@ def page_not_found(e):
     return render_template("404.html")
 
 
-@app.route('/')
-@app.route('/test')
+#@app.route('/')
+#@app.route('/test')
 def test():
     interval = 'week'
     channel = 'general'

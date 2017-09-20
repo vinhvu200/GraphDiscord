@@ -33,7 +33,7 @@ def generate_weekly_activity_graph(posts, timedelta, channel):
     return line_chart.render_data_uri()
 
 
-def generate_weekly_activity_graph2(posts, channel):
+def generate_activity_graph_hour(posts, channel):
 
     days = collections.OrderedDict()
     days['Monday'] = 0
@@ -46,19 +46,55 @@ def generate_weekly_activity_graph2(posts, channel):
 
     line_chart = pygal.Line()
     line_chart.x_labels = map(str, range(24))
-    line_chart.title = 'Discord Weekly Activity'
+    line_chart.title = 'Message Count vs Time(hours)'
 
     _, string_day = activity_day2(posts, 0, channel)
-    completed_days = days[string_day]
+    start = days[string_day]
+    end = -1
 
     days = collections.OrderedDict()
 
-    for timedelta_day in range(completed_days, -1, -1):
+    for timedelta_day in range(start, end, -1):
         time, string_day = activity_day2(posts, timedelta_day, channel)
         days[string_day] = time
 
     for day in days:
         line_chart.add(day, days[day])
+
+    return line_chart.render_data_uri()
+
+
+def generate_activity_graph_day(messages, channel):
+
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    adjustment = dict()
+    adjustment['Monday'] = 0
+    adjustment['Tuesday'] = 1
+    adjustment['Wednesday'] = 2
+    adjustment['Thursday'] = 3
+    adjustment['Friday'] = 4
+    adjustment['Saturday'] = 5
+    adjustment['Sunday'] = 6
+
+    line_chart = pygal.Line()
+    line_chart.title = 'Message Count vs Time(days)'
+    line_chart.x_labels = map(str, days)
+
+    timedelta = 0
+    _, message_counts = activity_week(messages, timedelta, channel)
+    line_chart.add('This week', message_counts)
+
+    timedelta = 1
+    _, message_counts = activity_week(messages, timedelta, channel)
+    line_chart.add('Last week', message_counts)
+
+    timedelta = 2
+    _, message_counts = activity_week(messages, timedelta, channel)
+    line_chart.add('Two weeks ago', message_counts)
+
+    timedelta = 3
+    _, message_counts = activity_week(messages, timedelta, channel)
+    line_chart.add('Three weeks ago', message_counts)
 
     return line_chart.render_data_uri()
 

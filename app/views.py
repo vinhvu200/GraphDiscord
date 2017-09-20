@@ -52,7 +52,7 @@ def update_general_day(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(10)
+            time.sleep(600)
         else:
             print('did not get lock and retrying')
             time.sleep(2)
@@ -84,7 +84,7 @@ def update_general_week(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(10)
+            time.sleep(600)
         else:
             time.sleep(2)
 
@@ -117,7 +117,7 @@ def update_skype_day(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(10)
+            time.sleep(600)
         else:
             time.sleep(2)
 
@@ -149,7 +149,7 @@ def update_skype_week(lock):
                 lock.release()
 
         if have_it:
-            time.sleep(10)
+            time.sleep(600)
         else:
             time.sleep(2)
 
@@ -184,7 +184,7 @@ skype_week_thread.start()
 
 
 @app.route('/GeneralDays')
-@app.route('/')
+#@app.route('/')
 def general_days():
 
     have_it = general_day_lock.acquire(0)
@@ -301,8 +301,7 @@ def page_not_found(e):
     return render_template("404.html")
 
 
-#@app.route('/')
-#@app.route('/test')
+@app.route('/test')
 def test():
     interval = 'week'
     channel = 'general'
@@ -310,12 +309,34 @@ def test():
     client, db, messages = get_db()
 
     date = Util.get_date_timedelta(interval, timedelta)
-    activity_graph = Graph.generate_weekly_activity_graph2(messages, channel,)
+    activity_graph_hour = Graph.generate_activity_graph_hour(messages, channel)
+    activity_graph_day = Graph.generate_activity_graph_day(messages, channel)
     activity_graph_percentage = \
         Graph.generate_weekly_activity_percentage_graph(messages, timedelta, channel)
 
     client.close()
     return render_template("test.html",
-                           date_timedelta_0 = date,
-                           activity_graph=activity_graph,
+                           activity_graph_hour=activity_graph_hour,
+                           activity_graph_day=activity_graph_day,
+                           activity_percentage_graph=activity_graph_percentage)
+
+
+@app.route('/')
+@app.route('/test2')
+def test2():
+    interval = 'week'
+    channel = 'skype'
+    timedelta = 0
+    client, db, messages = get_db()
+
+    date = Util.get_date_timedelta(interval, timedelta)
+    activity_graph_hour = Graph.generate_activity_graph_hour(messages, channel)
+    activity_graph_day = Graph.generate_activity_graph_day(messages, channel)
+    activity_graph_percentage = \
+        Graph.generate_weekly_activity_percentage_graph(messages, timedelta, channel)
+
+    client.close()
+    return render_template("test2.html",
+                           activity_graph_hour=activity_graph_hour,
+                           activity_graph_day=activity_graph_day,
                            activity_percentage_graph=activity_graph_percentage)

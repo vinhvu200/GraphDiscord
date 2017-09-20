@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <center class="margin-top-10 text-info"><h3>Graph Discord</h3></center>
+    <div class="row margin-top-50">
+        <div class="col-2">
+            <nav class="nav flex-column bg-light">
+                <a class="btn btn-outline-info active" href="#">#General</a>
+                <a class="btn btn-light" href="SkypeDays" align="center">#Skype</a>
+            </nav>
+        </div>
+        <div class="col-10">
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="GeneralDays">Days</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-info active" href="#">Weeks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="#">Months</a>
+                </li>
+            </ul>
+            <div id="GraphCarousel" class="carousel slide margin-top-10 bg-light" data-wrap="false" data-interval="false">
+            <div class="carousel-inner">
+                <div class="carousel-item active" align="center">
+                    <div class="margin-top-10"><h5 class="text-dark">{{ date_timedelta_0 }}</h5></div>
+                    <div class="margin-top-10">
+                        <embed type="image/svg+xml" src={{activity_percentage_graph|safe}} style='max-width:420px'/>
+                        <embed type="image/svg+xml" src={{ activity_graph|safe}} style='max-width:420px'/>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#GraphCarousel" role="button" data-slide="prev">
+                <i class='fa fa-chevron-circle-left' style="color:black;"></i>
+                <span class="sr-only">Prev</span>
+            </a>
+            <a class="carousel-control-next" href="#GraphCarousel" role="button" data-slide="next">
+                <i class='fa fa-chevron-circle-right' style="color:black;"></i>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

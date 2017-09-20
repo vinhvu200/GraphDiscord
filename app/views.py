@@ -34,9 +34,7 @@ def update_general_day(lock):
         have_it = lock.acquire(0)
         try:
             if have_it:
-                client = get_client()
-                db = get_db(client)
-                messages = get_collection(db)
+                client, db, messages = get_db()
                 del general_day_dates[:]
                 del general_day_activity_graphs[:]
                 del general_day_activity_graphs_percentages[:]
@@ -67,9 +65,7 @@ def update_general_week(lock):
         have_it = lock.acquire(0)
         try:
             if have_it:
-                client = get_client()
-                db = get_db(client)
-                messages = get_collection(db)
+                client, db, messages = get_db()
                 del general_week_dates[:]
                 del general_week_activity_graphs[:]
                 del general_week_activity_graphs_percentages[:]
@@ -100,9 +96,7 @@ def update_skype_day(lock):
         have_it = lock.acquire(0)
         try:
             if have_it:
-                client = get_client()
-                db = get_db(client)
-                messages = get_collection(db)
+                client, db, messages = get_db()
                 del skype_day_dates[:]
                 del skype_day_activity_graphs[:]
                 del skype_day_activity_graphs_percentages[:]
@@ -136,9 +130,7 @@ def update_skype_week(lock):
         have_it = lock.acquire(0)
         try:
             if have_it:
-                client = get_client()
-                db = get_db(client)
-                messages = get_collection(db)
+                client, db, messages = get_db()
                 del skype_week_dates[:]
                 del skype_week_activity_graphs[:]
                 del skype_week_activity_graphs_percentages[:]
@@ -192,7 +184,7 @@ skype_week_thread.start()
 
 
 @app.route('/GeneralDays')
-@app.route('/')
+#@app.route('/')
 def general_days():
 
     have_it = general_day_lock.acquire(0)
@@ -307,3 +299,23 @@ def skype_weeks():
 def page_not_found(e):
     print(e)
     return render_template("404.html")
+
+
+@app.route('/')
+@app.route('/test')
+def test():
+    interval = 'week'
+    channel = 'general'
+    timedelta = 0
+    client, db, messages = get_db()
+
+    date = Util.get_date_timedelta(interval, timedelta)
+    activity_graph = Graph.generate_weekly_activity_graph2(messages, channel,)
+    activity_graph_percentage = \
+        Graph.generate_weekly_activity_percentage_graph(messages, timedelta, channel)
+
+    client.close()
+    return render_template("test.html",
+                           date_timedelta_0 = date,
+                           activity_graph=activity_graph,
+                           activity_percentage_graph=activity_graph_percentage)

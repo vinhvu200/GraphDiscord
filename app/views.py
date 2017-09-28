@@ -3,7 +3,8 @@ import threading, time
 from flask import render_template
 from app import app
 from app.scripts import Util, Graph
-from database import get_collection, get_client, get_db
+from database import get_db
+from app.model import GraphLine
 
 general_day_dates = []
 general_day_activity_graphs = []
@@ -303,12 +304,10 @@ def page_not_found(e):
 
 @app.route('/test')
 def test():
-    interval = 'week'
     channel = 'general'
     timedelta = 0
     client, db, messages = get_db()
 
-    date = Util.get_date_timedelta(interval, timedelta)
     activity_graph_hour = Graph.generate_activity_graph_hour(messages, channel)
     activity_graph_day = Graph.generate_activity_graph_day(messages, channel)
     activity_graph_percentage = \
@@ -324,14 +323,19 @@ def test():
 @app.route('/')
 @app.route('/test2')
 def test2():
-    interval = 'week'
+
+    graph_line = GraphLine.GraphLine('week', 'skype', 0)
+    graph_line.generate_coordinates()
+    print(graph_line.title)
+    print(graph_line.coordinates)
+
     channel = 'skype'
     timedelta = 0
     client, db, messages = get_db()
 
-    date = Util.get_date_timedelta(interval, timedelta)
     activity_graph_hour = Graph.generate_activity_graph_hour(messages, channel)
     activity_graph_day = Graph.generate_activity_graph_day(messages, channel)
+
     activity_graph_percentage = \
         Graph.generate_weekly_activity_percentage_graph(messages, timedelta, channel)
 

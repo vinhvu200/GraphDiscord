@@ -5,6 +5,7 @@ from app import app
 from app.scripts import Util, Graph
 from database import get_db
 from app.model import GraphLine
+from app.model import Graph as Graphz
 
 general_day_dates = []
 general_day_activity_graphs = []
@@ -324,10 +325,14 @@ def test():
 @app.route('/test2')
 def test2():
 
-    graph_line = GraphLine.GraphLine('week', 'skype', 0)
+    graph_line = GraphLine.GraphLine('day', 'skype', 0)
     graph_line.generate_coordinates()
     print(graph_line.title)
     print(graph_line.coordinates)
+
+    graph = Graphz.Graph('daily', 'skype')
+    graph.add_graph_line(graph_line)
+    graph.generate_graph()
 
     channel = 'skype'
     timedelta = 0
@@ -341,6 +346,6 @@ def test2():
 
     client.close()
     return render_template("test2.html",
-                           activity_graph_hour=activity_graph_hour,
+                           activity_graph_hour=graph.rendered_graph,
                            activity_graph_day=activity_graph_day,
                            activity_percentage_graph=activity_graph_percentage)

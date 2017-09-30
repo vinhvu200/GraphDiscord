@@ -1,76 +1,39 @@
-import datetime
+import pygal
+
 
 class Graph:
+    """
+    - This class MUST have self.type and self.channel defined in order to generate graphs.
+    - The self.graph_lines variable MUST contain objects for GraphLine class
+    """
+    def __init__(self, type, channel):
+        self.type = type
+        self.channel = channel
+        self.graph_lines = []
+        self.rendered_graph = None
 
-    def __init__(self):
-        self.type = None
-        self.channel = None
-        self.graph = None
+    def add_graph_line(self, graph_line):
+        self.graph_lines.append(graph_line)
 
-    def generate(self):
-        pass
+    def clear_graph_lines(self):
+        del self.graph_lines[:]
 
-    def calculate_activity_day(self):
-        pass
+    def generate_graph(self):
 
-    def calculate_activity_week(self):
-        pass
+        if self.type == 'daily':
+            self.__generate_daily_graph()
+        elif self.type == 'weekly':
+            self.__generate_weekly_graph()
 
-    @staticmethod
-    def __get_times(self, interval, timedelta):
-        if interval == 'day':
+    def __generate_daily_graph(self):
+        line_chart = pygal.Line()
+        line_chart.title = 'Channel: #{}\nMessage Count vs Time (hours)'.format(self.channel)
+        line_chart.x_labels = map(str, range(0, 24))
 
-            # Calculate utc and real end time
-            utc_end = datetime.datetime.utcnow()
-            real_end = utc_end - datetime.timedelta(hours=7)
+        for graph_line in self.graph_lines:
+            line_chart.add(graph_line.title, graph_line.coordinates)
 
-            # Calculate utc and real start time
-            utc_start = utc_end - datetime.timedelta(hours=real_end.hour, minutes=real_end.minute)
-            real_start = real_end - datetime.timedelta(hours=real_end.hour, minutes=real_end.minute)
+        self.rendered_graph = line_chart.render_data_uri()
 
-            if timedelta > 0:
-                # Adjust utc time range with delta
-                utc_end = utc_start - datetime.timedelta(days=timedelta - 1)
-                utc_start = utc_start - datetime.timedelta(days=timedelta)
-
-                # Adjust real time range with delta
-                real_end = real_start - datetime.timedelta(days=timedelta - 1)
-                real_start = real_start - datetime.timedelta(days=timedelta)
-
-        elif interval == 'week':
-
-            Days = {'Monday': 0,
-                    'Tuesday': 1,
-                    'Wednesday': 2,
-                    'Thursday': 3,
-                    'Friday': 4,
-                    'Saturday': 5,
-                    'Sunday': 6}
-
-            # Calculate utc and real end time
-            utc_end = datetime.datetime.utcnow()
-            real_end = utc_end - datetime.timedelta(hours=7)
-
-            day = '{} {} {}'.format(real_end.month, real_end.day, real_end.year)
-            string_day = datetime.datetime.strptime(day, '%m %d %Y').strftime('%A')
-
-            utc_start = utc_end - datetime.timedelta(days=Days[string_day], hours=real_end.hour,
-                                                     minutes=real_end.minute)
-            real_start = real_end - datetime.timedelta(days=Days[string_day], hours=real_end.hour,
-                                                       minutes=real_end.minute)
-
-            # Adjust utc time range with delta
-            utc_end = utc_start - datetime.timedelta(days=(timedelta - 1) * 7)
-            utc_start = utc_start - datetime.timedelta(days=timedelta * 7)
-
-            # Adjust real time range with delta
-            real_end = real_start - datetime.timedelta(days=(timedelta - 1) * 7)
-            real_start = real_start - datetime.timedelta(days=timedelta * 7)
-
-        else:
-            utc_start = utc_end = real_start = real_end = -1
-
-        return utc_start, utc_end, real_start, real_end
-
-    def __calculate_daily_activities(self, query_results, real_end_hour):
+    def __generate_weekly_graph(self):
         pass

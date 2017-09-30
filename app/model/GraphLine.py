@@ -262,6 +262,9 @@ class GraphLine:
         :return: Nothing
         """
 
+        # Delete list of coordinates first before appending them
+        del self.coordinates[:]
+
         # Case where interval is day
         if self.interval == 'day':
             self.__generate_title_day()

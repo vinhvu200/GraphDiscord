@@ -161,8 +161,17 @@ class GraphLine:
         # Get the day in which this data is for ('Monday', 'Tuesday'... etc)
         _, _, real_start, _ = self.__get_time_range()
 
+        # Formats the date as a string
         date = '{} / {} / {}'.format(real_start.month, real_start.day, real_start.year)
-        self.title = datetime.datetime.strptime(date, '%m / %d / %Y').strftime('%A')
+
+        # Get the string_day from the date
+        string_day = datetime.datetime.strptime(date, '%m / %d / %Y').strftime('%A')
+
+        # If timedelta = 0, that means that the date is today
+        if self.timedelta == 0:
+            self.title = '{}'.format(string_day)
+        else:
+            self.title = string_day
 
     def __generate_title_week(self):
         """

@@ -330,8 +330,7 @@ def test2():
     print(graph_line.title)
     print(graph_line.coordinates)
 
-    graph = Graphz.Graph('daily', 'skype')
-    graph.add_graph_line(graph_line)
+    graph = Graphz.Graph('day', 'skype', 0)
     graph.generate_graph()
 
     channel = 'skype'

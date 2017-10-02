@@ -6,7 +6,10 @@ from collections import OrderedDict
 class GraphLine:
     """
     In order to utilize this class, interval, channel, and timedelta MUST
-    be initialized. Otherwise, there would be no point
+    be initialized. Otherwise, this would not work
+
+    NOTE: title variable is used in Graph class which can be instantiated using
+     the .generate_coordinates method
     """
 
     def __init__(self, interval, channel, timedelta):

@@ -325,11 +325,6 @@ def test():
 @app.route('/test2')
 def test2():
 
-    graph_line = GraphLine.GraphLine('day', 'skype', 0)
-    graph_line.generate_coordinates()
-    print(graph_line.title)
-    print(graph_line.coordinates)
-
     graph = Graphz.Graph('day', 'skype', 0)
     graph.generate_graph()
 

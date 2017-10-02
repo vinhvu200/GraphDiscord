@@ -328,6 +328,9 @@ def test2():
     graph = Graphz.Graph('day', 'skype', 0)
     graph.generate_graph()
 
+    graph2 = Graphz.Graph('week', 'skype', 0)
+    graph2.generate_graph()
+
     channel = 'skype'
     timedelta = 0
     client, db, messages = get_db()
@@ -341,5 +344,5 @@ def test2():
     client.close()
     return render_template("test2.html",
                            activity_graph_hour=graph.rendered_graph,
-                           activity_graph_day=activity_graph_day,
+                           activity_graph_day=graph2.rendered_graph,
                            activity_percentage_graph=activity_graph_percentage)

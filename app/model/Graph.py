@@ -35,14 +35,6 @@ class Graph:
         self.rendered_graph = None
         self.timedelta = timedelta
 
-    def __add_graph_line(self, graph_line):
-        """
-        This function simply appends a GraphLine object into the graph_lines list
-        :param graph_line: Must pass in a GraphLine object which has the coordinates generated
-        :return: Nothing
-        """
-        self.graph_lines.append(graph_line)
-
     def __generate_daily_graph(self):
         """
         - This function utilizes the pygal library in order to generate the day graph and render it
@@ -79,7 +71,7 @@ class Graph:
 
         # Important: This is used to determine the the current day in order to know
         # how to adjust it back to Monday
-        graph_line = GraphLine.GraphLine('day', self.channel, 0)
+        graph_line = GraphLine.GraphLine(self.type, self.channel, 0)
         graph_line.generate_coordinates()
 
         # The start_timedelta will be used to start the graph_line on Monday
@@ -99,18 +91,55 @@ class Graph:
             graph_line = GraphLine.GraphLine(self.type, self.channel, start_timedelta)
             graph_line.generate_coordinates()
 
+            # Append to title to let user know it is current day
             if start_timedelta == 0:
                 graph_line.title += '(Today)'
 
             # add into self.graph_lines and decrement start_timedelta
-            self.__add_graph_line(graph_line)
+            self.graph_lines.append(graph_line)
             start_timedelta -= 1
 
-    def __generate_weekly_graph_lines(self):
-        pass
-
     def __generate_weekly_graph(self):
-        pass
+        """
+        - This function utilizes the pygal library in order to generate the week graph and render it
+        - Week graph : message_count vs time (day)
+        - self.rendered_graph should be okay to use after calling this
+        :return:
+        """
+
+        # Initiates the library to use a basic Line Graph
+        line_chart = pygal.Line()
+
+        # Titles the Graph/Chart
+        line_chart.title = 'Channel: #{}\nMessage Count vs Time (days)'.format(self.channel)
+
+        # All the names for the x_axis
+        string_day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+        # Names the x_label for each day in weeks
+        line_chart.x_labels = map(str, string_day)
+
+        # Takes each graph_line in self.graph_lines and add it to the pygal chart
+        for graph_line in self.graph_lines:
+            line_chart.add(graph_line.title, graph_line.coordinates)
+
+        # Render the graph to be used
+        self.rendered_graph = line_chart.render_data_uri()
+
+    def __generate_weekly_graph_lines(self):
+        """
+        - This function creates GraphLine objects, generates all its coordinates, and append it
+        to self.graph_lines
+        - self.graph_lines should be okay to be used after this
+        - Generates the lines for the last 4 weeks
+        :return:
+        """
+
+        # Generates the graph_line object for the last 4 weeks and append them to self.graph_lines
+        for timedelta in range(0, 4):
+            graph_line = GraphLine.GraphLine(self.type, self.channel, timedelta)
+            graph_line.generate_coordinates()
+            self.graph_lines.append(graph_line)
 
     def generate_graph(self):
         """

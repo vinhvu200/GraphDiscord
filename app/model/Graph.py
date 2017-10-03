@@ -82,9 +82,12 @@ class Graph:
         # end_timedelta will be used to end graph_line on Sunday
         end_timedelta = 0
 
-        # Adjust the start/end with initial timedelta
-        start_timedelta += 7 * self.timedelta
-        end_timedelta += 7 * self.timedelta
+        # Adjusted the start/end with initial timedelta
+        temp_timedelta = self.timedelta
+        while temp_timedelta > 0:
+            end_timedelta = start_timedelta
+            start_timedelta = start_timedelta + 7
+            temp_timedelta -= 1
 
         # Get all the GraphLine objects between the start/end timedelta, generate
         # the coordinates and stores it into self.graph_lines
@@ -103,7 +106,8 @@ class Graph:
 
     def __generate_weekly_percent_graph(self):
 
-        graph_percent = GraphPercent.GraphPercent('week', 'skype', 0)
+        # Create the graph_percent class and generate the appropriate coordinates
+        graph_percent = GraphPercent.GraphPercent(self.type.split('_')[0], self.channel, self.timedelta)
         graph_percent.generate_coordinates()
 
         # Initiates the library to use a basic Pie Graph
@@ -190,4 +194,5 @@ class Graph:
 
         # Case for day_percent
         elif self.type == 'week_percent':
+            # Generate percentage graph for the week
             self.__generate_weekly_percent_graph()

@@ -330,7 +330,7 @@ def test2():
     graph_percent.generate_coordinates()
     print(graph_percent.coordinates)
 
-    graph = Graphz.Graph('day', 'skype', 0)
+    graph = Graphz.Graph('day', 'skype', 1)
     graph.generate_graph()
 
     graph2 = Graphz.Graph('week', 'skype', 0)

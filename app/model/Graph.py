@@ -101,7 +101,7 @@ class Graph:
             self.graph_lines.append(graph_line)
             start_timedelta -= 1
 
-    def __generate_daily_percent_graph(self):
+    def __generate_weekly_percent_graph(self):
 
         graph_percent = GraphPercent.GraphPercent('week', 'skype', 0)
         graph_percent.generate_coordinates()
@@ -181,13 +181,13 @@ class Graph:
             # Generate the graph with all the lines
             self.__generate_daily_graph()
 
-        # Case for day_percent
-        elif self.type == 'day_percent':
-            self.__generate_daily_percent_graph()
-
         # Case for week
         elif self.type == 'week':
             # Generate all the appropriate line for graph
             self.__generate_weekly_graph_lines()
             # Generate the graph with all the lines
             self.__generate_weekly_graph()
+
+        # Case for day_percent
+        elif self.type == 'week_percent':
+            self.__generate_weekly_percent_graph()

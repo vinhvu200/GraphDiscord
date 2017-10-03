@@ -336,7 +336,7 @@ def test2():
     graph2 = Graphz.Graph('week', 'skype', 0)
     graph2.generate_graph()
 
-    graph3 = Graphz.Graph('day_percent', 'skype', 0)
+    graph3 = Graphz.Graph('week_percent', 'skype', 0)
     graph3.generate_graph()
 
     channel = 'skype'

@@ -6,6 +6,7 @@ from app.scripts import Util, Graph
 from database import get_db
 from app.model import GraphLine
 from app.model import Graph as Graphz
+from app.model import GraphPercent
 
 general_day_dates = []
 general_day_activity_graphs = []
@@ -324,6 +325,10 @@ def test():
 @app.route('/')
 @app.route('/test2')
 def test2():
+
+    graph_percent = GraphPercent.GraphPercent('week', 'skype', 0)
+    graph_percent.generate_coordinates()
+    print(graph_percent.coordinates)
 
     graph = Graphz.Graph('day', 'skype', 0)
     graph.generate_graph()

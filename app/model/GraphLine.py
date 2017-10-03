@@ -101,7 +101,7 @@ class GraphLine:
         client, db, collection = get_db()
 
         # Get appropriate time range
-        utc_start, utc_end, real_start, real_end = self.__get_time_range()
+        utc_start, utc_end, real_start, real_end = self.get_time_range()
 
         # Attempt to query using dates, and channels
         try:
@@ -136,7 +136,7 @@ class GraphLine:
         client, db, collection = get_db()
 
         # Get appropriate time range
-        utc_start, utc_end, real_start, real_end = self.__get_time_range()
+        utc_start, utc_end, real_start, real_end = self.get_time_range()
 
         # Attempt to query using dates, and channels
         try:
@@ -162,7 +162,7 @@ class GraphLine:
         :return: Nothing
         """
         # Get the day in which this data is for ('Monday', 'Tuesday'... etc)
-        _, _, real_start, _ = self.__get_time_range()
+        _, _, real_start, _ = self.get_time_range()
 
         # Formats the date as a string
         date = '{} / {} / {}'.format(real_start.month, real_start.day, real_start.year)
@@ -196,7 +196,7 @@ class GraphLine:
         else:
             self.title = 'None'
 
-    def __get_time_range(self):
+    def get_time_range(self):
         """
         This function determines the start and end time (both utc and real) to be used for
         the query. It is determined using self.interval and self.timedelta

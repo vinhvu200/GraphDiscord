@@ -135,7 +135,7 @@ class Graph:
         :return:
         """
 
-        # Generates the graph_line object for the last 4 weeks and append them to self.graph_lines
+        # Generates the graph_line object for the last 4 weeks and append them to graph_line
         for timedelta in range(0, 4):
             graph_line = GraphLine.GraphLine(self.type, self.channel, timedelta)
             graph_line.generate_coordinates()

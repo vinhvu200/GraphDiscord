@@ -14,6 +14,26 @@ class GraphPercent(GraphLine.GraphLine):
         super().__init__(interval, channel, timedelta)
         self.coordinates = dict()
 
+    def __calculate_weekly_activities_percentage(self):
+        """
+        - This function takes all the results in self.query_results, count up the total messages,
+            and put each unique name in the dictionary to count their individual message_count
+        - Afterward, it divides each unique name's individual message_count by the total and multiplies
+            by 100 to get the appropriate percentage
+        :return: None
+        """
+        message_count = 0
+        for result in self.query_results:
+            message_count += 1
+            name = result['author'].split('#')[0]
+            if name in self.coordinates:
+                self.coordinates[name] += 1
+            else:
+                self.coordinates[name] = 1
+
+        for activity in self.coordinates:
+            self.coordinates[activity] = self.coordinates[activity] / message_count * 100
+
     def __generate_title_week(self):
         """
         - This function generates the title for the Graph
@@ -24,7 +44,13 @@ class GraphPercent(GraphLine.GraphLine):
         self.title = 'Channel:#{}\nWeekly Percentage'.format(self.channel)
 
     def __generate_coordinates_week(self):
+        """
+        - This function acts as a wrapper to format the steps in a readable manner
+        :return:
+        """
+        # Connect to database and fill up self.query_results
         self.__query_results()
+        # Calculate each individual's percentage of the total amount of messages
         self.__calculate_weekly_activities_percentage()
 
     def __query_results(self):
@@ -46,26 +72,20 @@ class GraphPercent(GraphLine.GraphLine):
         except Exception as e:
             print(e)
 
-        self.__calculate_weekly_activities_percentage()
-
-    def __calculate_weekly_activities_percentage(self):
-
-        message_count = 0
-        for query in self.query_results:
-            message_count += 1
-            name = query['author'].split('#')[0]
-            if name in self.coordinates:
-                self.coordinates[name] += 1
-            else:
-                self.coordinates[name] = 1
-
-        for activity in self.coordinates:
-            self.coordinates[activity] = self.coordinates[activity] / message_count * 100
+        # Close the connection
+        client.close()
 
     def generate_coordinates(self):
+        """
+        - This function checks the intervals that has been set when creating the object
+            and direct the appropriate methods to handle it
+        :return:
+        """
 
+        # Clears all the coordinates first in case this function is called a second time
         self.coordinates.clear()
 
+        # Case to handle week interval
         if self.interval == 'week':
             self.__generate_title_week()
             self.__generate_coordinates_week()

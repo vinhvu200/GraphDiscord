@@ -321,36 +321,57 @@ def test():
                            activity_graph_day=activity_graph_day,
                            activity_percentage_graph=activity_graph_percentage)
 
+#@app.route('/')
+@app.route('/SkypeCurrent')
+def SkypeCurrent():
 
-@app.route('/')
-@app.route('/test2')
-def test2():
-
-    graph_percent = GraphPercent.GraphPercent('week', 'skype', 0)
-    graph_percent.generate_coordinates()
-    print(graph_percent.coordinates)
-
-    graph = Graphz.Graph('day', 'skype', 1)
-    graph.generate_graph()
-
-    graph2 = Graphz.Graph('week', 'skype', 0)
-    graph2.generate_graph()
-
-    graph3 = Graphz.Graph('week_percent', 'skype', 0)
-    graph3.generate_graph()
-
+    # Variables to set the graph
+    graph1_interval = 'day'
+    graph2_interval = 'week'
+    graph3_interval = 'week_percent'
     channel = 'skype'
     timedelta = 0
-    client, db, messages = get_db()
 
-    activity_graph_hour = Graph.generate_activity_graph_hour(messages, channel)
-    activity_graph_day = Graph.generate_activity_graph_day(messages, channel)
+    # Generate day graph
+    graph1 = Graphz.Graph(graph1_interval, channel, timedelta)
+    graph1.generate_graph()
 
-    activity_graph_percentage = \
-        Graph.generate_weekly_activity_percentage_graph(messages, timedelta, channel)
+    # Generate week graph
+    graph2 = Graphz.Graph(graph2_interval, channel, timedelta)
+    graph2.generate_graph()
 
-    client.close()
-    return render_template("test2.html",
-                           activity_graph_hour=graph.rendered_graph,
-                           activity_graph_day=graph2.rendered_graph,
-                           activity_percentage_graph=graph3.rendered_graph)
+    # Generate week percent graph
+    graph3 = Graphz.Graph(graph3_interval, channel, timedelta)
+    graph3.generate_graph()
+
+    return render_template("SkypeCurrent.html",
+                           day_graph=graph1.rendered_graph,
+                           week_graph=graph2.rendered_graph,
+                           week_percent_graph=graph3.rendered_graph)
+
+@app.route('/')
+@app.route('/GeneralCurrent')
+def GeneralCurrent():
+    # Variables to set the graph
+    graph1_interval = 'day'
+    graph2_interval = 'week'
+    graph3_interval = 'week_percent'
+    channel = 'general'
+    timedelta = 0
+
+    # Generate day graph
+    graph1 = Graphz.Graph(graph1_interval, channel, timedelta)
+    graph1.generate_graph()
+
+    # Generate week graph
+    graph2 = Graphz.Graph(graph2_interval, channel, timedelta)
+    graph2.generate_graph()
+
+    # Generate week percent graph
+    graph3 = Graphz.Graph(graph3_interval, channel, timedelta)
+    graph3.generate_graph()
+
+    return render_template("GeneralCurrent.html",
+                           day_graph=graph1.rendered_graph,
+                           week_graph=graph2.rendered_graph,
+                           week_percent_graph=graph3.rendered_graph)

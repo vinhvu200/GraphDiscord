@@ -19,6 +19,13 @@ class GraphLine:
         self.timedelta = timedelta
         self.query_results = None
         self.channel = channel
+        self.utc_start = None
+        self.utc_end = None
+        self.real_start = None
+        self.real_end = None
+
+        # Get appropriate time range after interval, channel, and timedelta has been set
+        self.get_time_range()
 
     def __calculate_daily_activities(self, current_hour):
         """
@@ -100,12 +107,9 @@ class GraphLine:
         # Open client to access database
         client, db, collection = get_db()
 
-        # Get appropriate time range
-        utc_start, utc_end, real_start, real_end = self.get_time_range()
-
         # Attempt to query using dates, and channels
         try:
-            self.query_results = collection.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': self.channel})
+            self.query_results = collection.find({'time': {'$gte': self.utc_start, '$lt': self.utc_end}, 'channel': self.channel})
         except Exception as e:
             print(e)
             return None
@@ -113,7 +117,7 @@ class GraphLine:
         # If delta is 0, then you have to search for when the time is 'not yet recorded'
         # Otherwise, all time will have been accounted for
         if self.timedelta == 0:
-            activities_by_hours = self.__calculate_daily_activities(real_end.hour)
+            activities_by_hours = self.__calculate_daily_activities(self.real_end.hour)
         else:
             activities_by_hours = self.__calculate_daily_activities(None)
 
@@ -135,12 +139,9 @@ class GraphLine:
         # Open client to access database
         client, db, collection = get_db()
 
-        # Get appropriate time range
-        utc_start, utc_end, real_start, real_end = self.get_time_range()
-
         # Attempt to query using dates, and channels
         try:
-            self.query_results = collection.find({'time': {'$gte': utc_start, '$lt': utc_end},
+            self.query_results = collection.find({'time': {'$gte': self.utc_start, '$lt': self.utc_end},
                                                   'channel': self.channel})
         except Exception as e:
             print(e)
@@ -161,11 +162,9 @@ class GraphLine:
 
         :return: Nothing
         """
-        # Get the day in which this data is for ('Monday', 'Tuesday'... etc)
-        _, _, real_start, _ = self.get_time_range()
 
         # Formats the date as a string
-        date = '{} / {} / {}'.format(real_start.month, real_start.day, real_start.year)
+        date = '{} / {} / {}'.format(self.real_start.month, self.real_start.day, self.real_start.year)
 
         # Get the string_day from the date
         string_day = datetime.datetime.strptime(date, '%m / %d / %Y').strftime('%A')
@@ -186,7 +185,7 @@ class GraphLine:
 
         # Title is set up to 4 weeks back depending on timedelta
         if self.timedelta == 0:
-            self.title = 'Today'
+            self.title = 'This week'
         elif self.timedelta == 1:
             self.title = 'Last week'
         elif self.timedelta == 2:
@@ -263,8 +262,11 @@ class GraphLine:
         else:
             utc_start = utc_end = real_start = real_end = -1
 
-        # Returns utc and real time
-        return utc_start, utc_end, real_start, real_end
+        # Set utc and real time
+        self.utc_start = utc_start
+        self.utc_end = utc_end
+        self.real_start = real_start
+        self.real_end = real_end
 
     def generate_coordinates(self):
         """

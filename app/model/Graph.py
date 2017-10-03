@@ -48,8 +48,21 @@ class Graph:
         # Initiates the library to use a basic Line Graph
         line_chart = pygal.Line()
 
+        # Format appropriate start and end time to add to the title of the graph
+        start_time = ''
+        end_time = ''
+        if len(self.graph_lines) != 0:
+            start_time = '{}/{}/{}'.format(self.graph_lines[0].real_start.month,
+                                           self.graph_lines[0].real_start.day,
+                                           self.graph_lines[0].real_start.year)
+            end_time = '{}/{}/{}'.format(self.graph_lines[len(self.graph_lines)-1].real_end.month,
+                                         self.graph_lines[len(self.graph_lines)-1].real_end.day,
+                                         self.graph_lines[len(self.graph_lines)-1].real_end.year)
+
         # Titles the Graph/Chart
-        line_chart.title = 'Channel: #{}\nMessage Count vs Time (hours)'.format(self.channel)
+        line_chart.title = 'Channel: #{}\nDate: {} -- {}\nMessage Count vs Time (hours)'.format(self.channel,
+                                                                                                start_time,
+                                                                                                end_time)
 
         # Names the x_label for each hour in day
         line_chart.x_labels = map(str, range(0, 24))
@@ -132,8 +145,21 @@ class Graph:
         # Initiates the library to use a basic Line Graph
         line_chart = pygal.Line()
 
+        # Format appropriate start and end time to add to the title of the graph
+        start_time = ''
+        end_time = ''
+        if len(self.graph_lines) != 0:
+            start_time = '{}/{}/{}'.format(self.graph_lines[0].real_start.month,
+                                           self.graph_lines[0].real_start.day,
+                                           self.graph_lines[0].real_start.year)
+            end_time = '{}/{}/{}'.format(self.graph_lines[len(self.graph_lines) - 1].real_end.month,
+                                         self.graph_lines[len(self.graph_lines) - 1].real_end.day,
+                                         self.graph_lines[len(self.graph_lines) - 1].real_end.year)
+
         # Titles the Graph/Chart
-        line_chart.title = 'Channel: #{}\nMessage Count vs Time (days)'.format(self.channel)
+        line_chart.title = 'Channel: #{}\nDate: {} -- {}\nMessage Count vs Time (days)'.format(self.channel,
+                                                                                               start_time,
+                                                                                               end_time)
 
         # All the names for the x_axis
         string_day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']

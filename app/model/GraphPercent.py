@@ -34,8 +34,6 @@ class GraphPercent(GraphLine.GraphLine):
 
         for name in unsorted_coordinates:
             unsorted_coordinates[name] = unsorted_coordinates[name] / message_count * 100
-        #self.coordinates = [(activity, self.coordinates[activity])] for activity in
-        #                    sorted(self.coordinates, key=self.coordinates.get, reverse=True)]
 
         self.coordinates = [(name, unsorted_coordinates[name]) for name in
                              sorted(unsorted_coordinates, key=unsorted_coordinates.get, reverse=True)]
@@ -66,15 +64,12 @@ class GraphPercent(GraphLine.GraphLine):
         :return: None
         """
 
-        # Get appropriate time range
-        utc_start, utc_end, real_start, real_end = self.get_time_range()
-
         # Open client to access database
         client, db, collection = get_db()
 
         # Attempt to query by dates
         try:
-            self.query_results = collection.find({'time': {'$gte': utc_start, '$lt': utc_end}, 'channel': self.channel})
+            self.query_results = collection.find({'time': {'$gte': self.utc_start, '$lt': self.utc_end}, 'channel': self.channel})
         except Exception as e:
             print(e)
 

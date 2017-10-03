@@ -1,5 +1,6 @@
 import pygal
 from app.model import GraphLine
+from app.model import GraphPercent
 
 
 class Graph:
@@ -7,7 +8,8 @@ class Graph:
     - This class MUST have self.type, self.timedelta, and self.channel defined in order to generate graphs.
     - The GraphLine objects that are passed in MUST have their coordinates generated
     - Day Graph : message_count vs Time (hours)
-    - Week Graph : messagae_count vs Time (days)
+    - Week Graph : message_count vs Time (days)
+    - Day Percentage Graph : Pie chart of percentages of people's message_count
     - NOTE: Remember that in order to get title for GraphLine object, the object must call generate_coordinates
     """
 
@@ -99,6 +101,22 @@ class Graph:
             self.graph_lines.append(graph_line)
             start_timedelta -= 1
 
+    def __generate_daily_percent_graph(self):
+
+        graph_percent = GraphPercent.GraphPercent('week', 'skype', 0)
+        graph_percent.generate_coordinates()
+
+        # Initiates the library to use a basic Pie Graph
+        pie_chart = pygal.Pie()
+
+        # Titles the Graph/Chart
+        pie_chart.title = 'Channel: #{}\nWeekly User Percentage Activity'.format(self.channel)
+
+        for name, percent in graph_percent.coordinates:
+            pie_chart.add(name, round(percent, 2))
+
+        self.rendered_graph = pie_chart.render_data_uri()
+
     def __generate_weekly_graph(self):
         """
         - This function utilizes the pygal library in order to generate the week graph and render it
@@ -147,6 +165,8 @@ class Graph:
         then redirects to the appropriate private functions
         - It makes sure to clear everything in self.graph_lines first otherwise it will
         just append more stuff the list which makes the new data obsolete
+        - The percentage graphs are significantly easier to make because all of its
+        percentages have to be computed at once unlike the individual lines for line_charts
         :return: Nothing
         """
 
@@ -154,9 +174,20 @@ class Graph:
         del self.graph_lines[:]
 
         # Redirect to appropriate functions
+        # Case for day
         if self.type == 'day':
+            # Generate all the appropriate line for graph
             self.__generate_daily_graph_lines()
+            # Generate the graph with all the lines
             self.__generate_daily_graph()
+
+        # Case for day_percent
+        elif self.type == 'day_percent':
+            self.__generate_daily_percent_graph()
+
+        # Case for week
         elif self.type == 'week':
+            # Generate all the appropriate line for graph
             self.__generate_weekly_graph_lines()
+            # Generate the graph with all the lines
             self.__generate_weekly_graph()

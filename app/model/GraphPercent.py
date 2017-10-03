@@ -23,16 +23,22 @@ class GraphPercent(GraphLine.GraphLine):
         :return: None
         """
         message_count = 0
+        unsorted_coordinates = dict()
         for result in self.query_results:
             message_count += 1
             name = result['author'].split('#')[0]
-            if name in self.coordinates:
-                self.coordinates[name] += 1
+            if name in unsorted_coordinates:
+                unsorted_coordinates[name] += 1
             else:
-                self.coordinates[name] = 1
+                unsorted_coordinates[name] = 1
 
-        for activity in self.coordinates:
-            self.coordinates[activity] = self.coordinates[activity] / message_count * 100
+        for name in unsorted_coordinates:
+            unsorted_coordinates[name] = unsorted_coordinates[name] / message_count * 100
+        #self.coordinates = [(activity, self.coordinates[activity])] for activity in
+        #                    sorted(self.coordinates, key=self.coordinates.get, reverse=True)]
+
+        self.coordinates = [(name, unsorted_coordinates[name]) for name in
+                             sorted(unsorted_coordinates, key=unsorted_coordinates.get, reverse=True)]
 
     def __generate_title_week(self):
         """

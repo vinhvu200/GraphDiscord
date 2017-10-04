@@ -250,13 +250,14 @@ class GraphLine:
             real_start = real_end - datetime.timedelta(days=days[string_day], hours=real_end.hour,
                                                        minutes=real_end.minute)
 
-            # Adjust utc time range with delta
-            utc_end = utc_start - datetime.timedelta(days=(self.timedelta - 1) * 7)
-            utc_start = utc_start - datetime.timedelta(days=self.timedelta * 7)
+            if self.timedelta > 0:
+                # Adjust utc time range with delta
+                utc_end = utc_start - datetime.timedelta(days=(self.timedelta - 1) * 7)
+                utc_start = utc_start - datetime.timedelta(days=self.timedelta * 7)
 
-            # Adjust real time range with delta
-            real_end = real_start - datetime.timedelta(days=(self.timedelta - 1) * 7)
-            real_start = real_start - datetime.timedelta(days=self.timedelta * 7)
+                # Adjust real time range with delta
+                real_end = real_start - datetime.timedelta(days=(self.timedelta - 1) * 7)
+                real_start = real_start - datetime.timedelta(days=self.timedelta * 7)
 
         # This case should never happen
         else:

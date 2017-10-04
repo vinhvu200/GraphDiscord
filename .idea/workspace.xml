@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbc6273f-5188-4b9e-ac15-a4d9273110a2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/templates/GeneralCurrent.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/model/Carousel.py" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/templates/test2.html" afterPath="$PROJECT_DIR$/app/templates/SkypeCurrent.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/model/Graph.py" afterPath="$PROJECT_DIR$/app/model/Graph.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/model/GraphLine.py" afterPath="$PROJECT_DIR$/app/model/GraphLine.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/model/GraphPercent.py" afterPath="$PROJECT_DIR$/app/model/GraphPercent.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views.py" afterPath="$PROJECT_DIR$/app/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -53,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Graph.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Graph.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/model/Graph.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
-              <caret line="159" column="104" lean-forward="true" selection-start-line="159" selection-start-column="104" selection-end-line="159" selection-end-column="104" />
+            <state relative-caret-position="429">
+              <caret line="132" column="66" lean-forward="true" selection-start-line="132" selection-start-column="66" selection-end-line="132" selection-end-column="66" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -65,11 +59,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GraphLine.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GraphLine.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/model/GraphLine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2445">
-              <caret line="163" column="11" lean-forward="false" selection-start-line="163" selection-start-column="11" selection-end-line="163" selection-end-column="11" />
+            <state relative-caret-position="542">
+              <caret line="259" column="85" lean-forward="false" selection-start-line="253" selection-start-column="16" selection-end-line="259" selection-end-column="85" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -80,8 +74,8 @@
       <file leaf-file-name="GraphPercent.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/model/GraphPercent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="33" lean-forward="true" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+            <state relative-caret-position="396">
+              <caret line="51" column="68" lean-forward="false" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="68" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -113,8 +107,8 @@
       <find>real_start</find>
       <find>self.utc_end</find>
       <find>get_time</find>
-      <find>get_time_range</find>
       <find>self.get_time_range</find>
+      <find>get_time_range</find>
     </findStrings>
     <replaceStrings>
       <replace>activity_day</replace>
@@ -166,9 +160,9 @@
         <option value="$PROJECT_DIR$/app/views.py" />
         <option value="$PROJECT_DIR$/app/templates/GeneralCurrent.html" />
         <option value="$PROJECT_DIR$/app/templates/SkypeCurrent.html" />
-        <option value="$PROJECT_DIR$/app/model/GraphLine.py" />
         <option value="$PROJECT_DIR$/app/model/GraphPercent.py" />
         <option value="$PROJECT_DIR$/app/model/Graph.py" />
+        <option value="$PROJECT_DIR$/app/model/GraphLine.py" />
       </list>
     </option>
   </component>
@@ -741,30 +735,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/model/GraphPercent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="33" lean-forward="true" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+        <state relative-caret-position="396">
+          <caret line="51" column="68" lean-forward="false" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="68" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/GraphLine.py">
+    <entry file="file://$PROJECT_DIR$/app/model/Graph.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2445">
-          <caret line="163" column="11" lean-forward="false" selection-start-line="163" selection-start-column="11" selection-end-line="163" selection-end-column="11" />
+        <state relative-caret-position="429">
+          <caret line="132" column="66" lean-forward="true" selection-start-line="132" selection-start-column="66" selection-end-line="132" selection-end-column="66" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/Graph.py">
+    <entry file="file://$PROJECT_DIR$/app/model/GraphLine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="159" column="104" lean-forward="true" selection-start-line="159" selection-start-column="104" selection-end-line="159" selection-end-column="104" />
+        <state relative-caret-position="542">
+          <caret line="259" column="85" lean-forward="false" selection-start-line="253" selection-start-column="16" selection-end-line="259" selection-end-column="85" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>

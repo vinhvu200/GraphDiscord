@@ -126,8 +126,18 @@ class Graph:
         # Initiates the library to use a basic Pie Graph
         pie_chart = pygal.Pie()
 
+        # Format appropriate start and end time to add to the title of the graph
+        start_time = '{}/{}/{}'.format(graph_percent.real_start.month,
+                                           graph_percent.real_start.day,
+                                           graph_percent.real_start.year)
+        end_time = '{}/{}/{}'.format(graph_percent.real_end.month,
+                                     graph_percent.real_end.day,
+                                     graph_percent.real_end.year)
+
         # Titles the Graph/Chart
-        pie_chart.title = 'Channel: #{}\nWeekly User Percentage Activity'.format(self.channel)
+        pie_chart.title = 'Channel: #{}\nDate: {} - {}\nWeekly User Percentage Activity'.format(self.channel,
+                                                                                              start_time,
+                                                                                              end_time)
 
         for name, percent in graph_percent.coordinates:
             pie_chart.add(name, round(percent, 2))

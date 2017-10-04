@@ -1,6 +1,7 @@
 import pygal
 from app.model import GraphLine
 from app.model import GraphPercent
+from pygal.style import Style
 
 
 class Graph:
@@ -45,8 +46,16 @@ class Graph:
         :return: Nothing
         """
 
+        # Create custom style for graph
+        custom_style = Style(
+            background='transparent',
+            plot_background='transparent',
+            foreground='#002a51',
+            foreground_strong='#002a51',
+            opacity='.9'
+        )
         # Initiates the library to use a basic Line Graph
-        line_chart = pygal.Line()
+        line_chart = pygal.Line(x_title='Time (hour)', y_title='Message Count', style=custom_style)
 
         # Format appropriate start and end time to add to the title of the graph
         start_time = ''
@@ -60,9 +69,9 @@ class Graph:
                                          self.graph_lines[len(self.graph_lines)-1].real_end.year)
 
         # Titles the Graph/Chart
-        line_chart.title = 'Channel: #{}\nDate: {} -- {}\nMessage Count vs Time (hours)'.format(self.channel,
-                                                                                                start_time,
-                                                                                                end_time)
+        line_chart.title = 'Date: {} -- {}\nChannel: #{}\nDaily Activities'.format(start_time,
+                                                                             end_time,
+                                                                             self.channel)
 
         # Names the x_label for each hour in day
         line_chart.x_labels = map(str, range(0, 24))
@@ -119,12 +128,19 @@ class Graph:
 
     def __generate_weekly_percent_graph(self):
 
+        # Create custom style for graph
+        custom_style = Style(
+            background='transparent',
+            foreground='#002a51',
+            foreground_strong='#002a51',
+            opacity='.9'
+        )
         # Create the graph_percent class and generate the appropriate coordinates
         graph_percent = GraphPercent.GraphPercent(self.type.split('_')[0], self.channel, self.timedelta)
         graph_percent.generate_coordinates()
 
         # Initiates the library to use a basic Pie Graph
-        pie_chart = pygal.Pie()
+        pie_chart = pygal.Pie(style=custom_style)
 
         # Format appropriate start and end time to add to the title of the graph
         start_time = '{}/{}/{}'.format(graph_percent.real_start.month,
@@ -135,9 +151,9 @@ class Graph:
                                      graph_percent.real_end.year)
 
         # Titles the Graph/Chart
-        pie_chart.title = 'Channel: #{}\nDate: {} - {}\nWeekly User Percentage Activity'.format(self.channel,
-                                                                                              start_time,
-                                                                                              end_time)
+        pie_chart.title = 'Date: {} - {}\nChannel: #{}\nWeekly Percentage Activity'.format(start_time,
+                                                                                                end_time,
+                                                                                                self.channel)
 
         # Add each name and respective percentage into the pie_chart
         for name, percent in graph_percent.coordinates:
@@ -154,8 +170,17 @@ class Graph:
         :return:
         """
 
+        # Create custom style for graph
+        custom_style = Style(
+            background='transparent',
+            plot_background='transparent',
+            foreground='#002a51',
+            foreground_strong='#002a51',
+            opacity='.9'
+        )
+
         # Initiates the library to use a basic Line Graph
-        line_chart = pygal.Line()
+        line_chart = pygal.Line(x_title='Time (day)', y_title='Message Count', style=custom_style)
 
         # Format appropriate start and end time to add to the title of the graph
         start_time = ''
@@ -169,9 +194,9 @@ class Graph:
                                          self.graph_lines[len(self.graph_lines) - 1].real_end.year)
 
         # Titles the Graph/Chart
-        line_chart.title = 'Channel: #{}\nDate: {} -- {}\nMessage Count vs Time (days)'.format(self.channel,
-                                                                                               start_time,
-                                                                                               end_time)
+        line_chart.title = 'Date: {} -- {}\nChannel: #{}\nWeekly Activities'.format(start_time,
+                                                                                               end_time,
+                                                                                               self.channel)
 
         # All the names for the x_axis
         string_day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']

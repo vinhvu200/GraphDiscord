@@ -98,7 +98,7 @@ class Graph:
         # Adjusted the start/end with initial timedelta
         temp_timedelta = self.timedelta
         while temp_timedelta > 0:
-            end_timedelta = start_timedelta
+            end_timedelta = start_timedelta + 1
             start_timedelta = start_timedelta + 7
             temp_timedelta -= 1
 
@@ -139,9 +139,11 @@ class Graph:
                                                                                               start_time,
                                                                                               end_time)
 
+        # Add each name and respective percentage into the pie_chart
         for name, percent in graph_percent.coordinates:
             pie_chart.add(name, round(percent, 2))
 
+        # Set self.rendered_graph
         self.rendered_graph = pie_chart.render_data_uri()
 
     def __generate_weekly_graph(self):

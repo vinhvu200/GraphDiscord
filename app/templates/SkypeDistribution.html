@@ -18,17 +18,22 @@
                     <a class="nav-link text-info" href="SkypeDays">Day</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-info active" href="#">Week</a>
+                    <a class="nav-link text-info" href="SkypeWeeks">Week</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-info" href="#">Distribution</a>
+                    <a class="nav-link text-info active" href="#">Distribution</a>
                 </li>
             </ul>
             <div id="GraphCarousel" class="carousel slide bg-light" data-wrap="false" data-interval="false">
             <div class="carousel-inner">
+                <div class="carousel-item" align="center">
+                    <div class="margin-top-10">
+                        <embed type="image/svg+xml" src={{ week_percent_graph_1|safe}} style='max-width:600px'/>
+                    </div>
+                </div>
                 <div class="carousel-item active" align="center">
                     <div class="margin-top-10">
-                        <embed type="image/svg+xml" src={{ week_graph_0|safe}} style='max-width:600px'/>
+                        <embed type="image/svg+xml" src={{ week_percent_graph_0|safe}} style='max-width:600px'/>
                     </div>
                 </div>
             </div>

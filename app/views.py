@@ -61,9 +61,8 @@ def generalCurrent():
                            week_percent_graph=graph3.rendered_graph)
 
 
-#@app.route('/')
 @app.route('/SkypeDays')
-def skype_day():
+def skype_days():
 
     graph_interval = 'day'
     channel = 'skype'
@@ -79,7 +78,23 @@ def skype_day():
                            day_graph_1=graphs[1].rendered_graph)
 
 
-#@app.route('/')
+@app.route('/SkypeDistribution')
+def skype_distribution():
+
+    graph_type = 'week_percent'
+    channel = 'skype'
+    graphs = []
+
+    for timedelta in range(2):
+        graph = Graph.Graph(graph_type, channel, timedelta)
+        graph.generate_graph()
+        graphs.append(graph)
+
+    return render_template("SkypeDistribution.html",
+                           week_percent_graph_0=graphs[0].rendered_graph,
+                           week_percent_graph_1=graphs[1].rendered_graph)
+
+
 @app.route('/SkypeWeeks')
 def skype_weeks():
 
@@ -97,9 +112,39 @@ def skype_weeks():
 
 
 @app.route('/')
-@app.route('/SkypeDistribution')
-def skype_distribution():
+@app.route('/GeneralDays')
+def general_days():
+    graph_interval = 'day'
+    channel = 'general'
+    graphs = []
 
+    for timedelta in range(2):
+        graph = Graph.Graph(graph_interval, channel, timedelta)
+        graph.generate_graph()
+        graphs.append(graph)
+
+    return render_template("GeneralDays.html",
+                           day_graph_0=graphs[0].rendered_graph,
+                           day_graph_1=graphs[1].rendered_graph)
+
+
+@app.route('/GeneralWeeks')
+def general_weeks():
+    graph_interval = 'week'
+    channel = 'general'
+    graphs = []
+
+    for timedelta in range(1):
+        graph = Graph.Graph(graph_interval, channel, timedelta)
+        graph.generate_graph()
+        graphs.append(graph)
+
+    return render_template("GeneralWeeks.html",
+                           week_graph_0=graphs[0].rendered_graph)
+
+
+@app.route('/GeneralDistribution')
+def general_distribution():
     graph_type = 'week_percent'
     channel = 'skype'
     graphs = []
@@ -109,10 +154,9 @@ def skype_distribution():
         graph.generate_graph()
         graphs.append(graph)
 
-    return render_template("SkypeDistribution.html",
+    return render_template("GeneralDistribution.html",
                            week_percent_graph_0=graphs[0].rendered_graph,
                            week_percent_graph_1=graphs[1].rendered_graph)
-
 
 @app.errorhandler(404)
 def page_not_found(e):

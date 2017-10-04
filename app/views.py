@@ -146,7 +146,7 @@ def general_weeks():
 @app.route('/GeneralDistribution')
 def general_distribution():
     graph_type = 'week_percent'
-    channel = 'skype'
+    channel = 'general'
     graphs = []
 
     for timedelta in range(2):

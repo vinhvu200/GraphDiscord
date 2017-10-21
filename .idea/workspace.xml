@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fbc6273f-5188-4b9e-ac15-a4d9273110a2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/model/Graph.py" afterPath="$PROJECT_DIR$/app/model/Graph.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/GeneralDays.html" afterPath="$PROJECT_DIR$/app/templates/GeneralDays.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/GeneralDistribution.html" afterPath="$PROJECT_DIR$/app/templates/GeneralDistribution.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/GeneralWeeks.html" afterPath="$PROJECT_DIR$/app/templates/GeneralWeeks.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/SkypeDays.html" afterPath="$PROJECT_DIR$/app/templates/SkypeDays.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/SkypeDistribution.html" afterPath="$PROJECT_DIR$/app/templates/SkypeDistribution.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/SkypeWeeks.html" afterPath="$PROJECT_DIR$/app/templates/SkypeWeeks.html" />
-    </list>
+    <list default="true" id="fbc6273f-5188-4b9e-ac15-a4d9273110a2" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +27,7 @@
       <file leaf-file-name="Graph.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/model/Graph.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
+            <state relative-caret-position="2040">
               <caret line="136" column="63" lean-forward="true" selection-start-line="136" selection-start-column="63" selection-end-line="136" selection-end-column="63" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
@@ -335,7 +326,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17430556" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31770223" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31770223" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -680,7 +671,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/model/Graph.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
+        <state relative-caret-position="2040">
           <caret line="136" column="63" lean-forward="true" selection-start-line="136" selection-start-column="63" selection-end-line="136" selection-end-column="63" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />

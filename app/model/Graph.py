@@ -134,11 +134,12 @@ class Graph:
             foreground='#002a51',
             foreground_strong='#002a51',
             opacity='.9',
-            colors=('#0082c8', '#46f0f0', '#e6194b', '#f032e6',
-                    '#3cb44b', '#911eb4', '#f58231', '#d2f53c',
-                    '#808080', '#ffe119', '#008080', '#000080',
-                    '#800000')
+            colors=('#2CFFFE', '#1681FB', '#0B24FB',
+                    '#7C25FB', '#FC28FC', '#FC157E',
+                    '#FC0D1B', '#FD7D23', '#FFFD38',
+                    '#82FD31', '#29FD2F', '#2AFD82')
         )
+
         # Create the graph_percent class and generate the appropriate coordinates
         graph_percent = GraphPercent.GraphPercent(self.type.split('_')[0], self.channel, self.timedelta)
         graph_percent.generate_coordinates()

@@ -49,10 +49,13 @@ class Graph:
         # Create custom style for graph
         custom_style = Style(
             background='transparent',
-            plot_background='transparent',
             foreground='#002a51',
             foreground_strong='#002a51',
-            opacity='.9'
+            opacity='.9',
+            colors=('#1681FB', '#0B24FB',
+                    '#7C25FB', '#FC28FC', '#FC157E',
+                    '#FD7D23',
+                    '#2f3033')
         )
         # Initiates the library to use a basic Line Graph
         line_chart = pygal.Line(x_title='Time (hour)', y_title='Message Count', style=custom_style)
@@ -178,10 +181,13 @@ class Graph:
         # Create custom style for graph
         custom_style = Style(
             background='transparent',
-            plot_background='transparent',
             foreground='#002a51',
             foreground_strong='#002a51',
-            opacity='.9'
+            opacity='.9',
+            colors=('#2f3033',
+                    '#7C25FB', '#FC28FC', '#FC157E',
+                    '#FC0D1B', '#FD7D23', '#FFFD38',
+                    '#82FD31', '#29FD2F', '#2AFD82')
         )
 
         # Initiates the library to use a basic Line Graph

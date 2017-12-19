@@ -1,9 +1,7 @@
 # GraphDiscord
 Displays random data from discord channels. The graph is interactive as well so feel free to play with it!
 
-Check it out at either:
-- http://54.202.140.35
-- http://ec2-54-202-140-35.us-west-2.compute.amazonaws.com/
+- **Sorry the website is not maintained anymore**
 
 # Screenshots
 ![Image 3](https://github.com/vinhvu200/GraphDiscord/raw/master/DemoImages/image_3.png "Image 3")
